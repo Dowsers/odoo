@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="hr_appraisal_custom_view_tree" model="ir.ui.view">
+        <field name="name">hr.appraisal.custom.tree</field>
+        <field name="model">hr.appraisal.custom</field>
+        <field name="arch" type="xml">
+            <list string="Appraisals">
+                <field name="employee_id"/>
+                <field name="manager_id"/>
+                <field name="department_id"/>
+                <field name="date_open"/>
+                <field name="date_close"/>
+                <field name="overall_rating"/>
+                <field name="state" decoration-info="state == 'draft'" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="hr_appraisal_custom_view_form" model="ir.ui.view">
+        <field name="name">hr.appraisal.custom.form</field>
+        <field name="model">hr.appraisal.custom</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal">
+                <header>
+                    <button name="action_start" string="Start" type="object" invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_self_assessment" string="Self Assessment" type="object" invisible="state != 'in_progress'"/>
+                    <button name="action_manager_assessment" string="Manager Assessment" type="object" invisible="state != 'self_assessment'"/>
+                    <button name="action_pending_signature" string="Request Signature" type="object" invisible="state != 'manager_assessment'"/>
+                    <button name="action_done" string="Complete" type="object" invisible="state != 'pending_signature'" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ['draft', 'in_progress', 'self_assessment', 'manager_assessment']"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,self_assessment,manager_assessment,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="manager_id"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                        </group>
+                        <group>
+                            <field name="date_open"/>
+                            <field name="date_close"/>
+                            <field name="template_id"/>
+                            <field name="overall_rating"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Criteria">
+                            <field name="criteria_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="category"/>
+                                    <field name="self_rating"/>
+                                    <field name="manager_rating"/>
+                                    <field name="weight"/>
+                                    <field name="score"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Goals">
+                            <field name="goal_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="deadline"/>
+                                    <field name="state"/>
+                                    <field name="progress"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Assessment">
+                            <group>
+                                <field name="self_assessment"/>
+                                <field name="employee_feedback"/>
+                                <field name="manager_assessment"/>
+                                <field name="manager_feedback"/>
+                            </group>
+                        </page>
+                        <page string="Strengths &amp; Areas for Improvement">
+                            <group>
+                                <field name="strengths"/>
+                                <field name="areas_improvement"/>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hr_appraisal_custom_view_search" model="ir.ui.view">
+        <field name="name">hr.appraisal.custom.search</field>
+        <field name="model">hr.appraisal.custom</field>
+        <field name="arch" type="xml">
+            <search string="Appraisals">
+                <field name="employee_id"/>
+                <field name="manager_id"/>
+                <field name="department_id"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                <group>
+                    <filter string="Employee" name="group_employee" domain="[]" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Manager" name="group_manager" domain="[]" context="{'group_by': 'manager_id'}"/>
+                    <filter string="Department" name="group_department" domain="[]" context="{'group_by': 'department_id'}"/>
+                    <filter string="Status" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="hr_appraisal_custom_view_kanban" model="ir.ui.view">
+        <field name="name">hr.appraisal.custom.kanban</field>
+        <field name="model">hr.appraisal.custom</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="employee_id"/>
+                <field name="state"/>
+                <field name="date_open"/>
+                <field name="overall_rating"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <div class="oe_kanban_content">
+                                <strong><field name="employee_id"/></strong>
+                                <div>Date: <field name="date_open"/></div>
+                                <div>Status: <field name="state"/></div>
+                                <div t-if="record.overall_rating.raw_value">Rating: <field name="overall_rating"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Calendar View -->
+    <record id="hr_appraisal_custom_view_calendar" model="ir.ui.view">
+        <field name="name">hr.appraisal.custom.calendar</field>
+        <field name="model">hr.appraisal.custom</field>
+        <field name="arch" type="xml">
+            <calendar string="Appraisals" date_start="date_open" date_stop="date_close" color="employee_id">
+                <field name="employee_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+</odoo>

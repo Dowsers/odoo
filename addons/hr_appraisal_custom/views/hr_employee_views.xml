@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action to view appraisals from employee -->
+    <record id="action_hr_appraisal_from_employee" model="ir.actions.act_window">
+        <field name="name">Appraisals</field>
+        <field name="res_model">hr.appraisal.custom</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+    <!-- Inherit Employee Form View -->
+    <record id="hr_employee_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.appraisal</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_appraisals" type="object" class="oe_stat_button" icon="fa-star">
+                    <field name="appraisal_count" widget="statinfo" string="Appraisals"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']" position="after">
+                <page string="Appraisals" name="appraisals">
+                    <group>
+                        <group>
+                            <field name="last_appraisal_date"/>
+                            <field name="next_appraisal_date"/>
+                        </group>
+                        <group>
+                            <field name="appraisal_frequency"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="hr_appraisal_template_view_tree" model="ir.ui.view">
+        <field name="name">hr.appraisal.template.tree</field>
+        <field name="model">hr.appraisal.template</field>
+        <field name="arch" type="xml">
+            <list string="Appraisal Templates">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="hr_appraisal_template_view_form" model="ir.ui.view">
+        <field name="name">hr.appraisal.template.form</field>
+        <field name="model">hr.appraisal.template</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal Template">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Criteria">
+                            <field name="criteria_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="category"/>
+                                    <field name="weight"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hr_appraisal_template_view_search" model="ir.ui.view">
+        <field name="name">hr.appraisal.template.search</field>
+        <field name="model">hr.appraisal.template</field>
+        <field name="arch" type="xml">
+            <search string="Appraisal Templates">
+                <field name="name"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

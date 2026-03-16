@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- This cron job already exists in the database (ID 57)
+             We don't create it here to avoid duplicates
+             The existing cron job will now work with the _cron_schedule_appraisals method -->
+    </data>
+</odoo>

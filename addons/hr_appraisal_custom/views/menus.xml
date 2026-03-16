@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actions -->
+    <record id="hr_appraisal_custom_action" model="ir.actions.act_window">
+        <field name="name">Appraisals</field>
+        <field name="res_model">hr.appraisal.custom</field>
+        <field name="view_mode">list,form,kanban,calendar</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new appraisal
+            </p>
+        </field>
+    </record>
+
+    <record id="hr_appraisal_custom_action_my" model="ir.actions.act_window">
+        <field name="name">My Appraisals</field>
+        <field name="res_model">hr.appraisal.custom</field>
+        <field name="view_mode">list,form,kanban,calendar</field>
+        <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="hr_appraisal_custom_action_team" model="ir.actions.act_window">
+        <field name="name">Team Appraisals</field>
+        <field name="res_model">hr.appraisal.custom</field>
+        <field name="view_mode">list,form,kanban,calendar</field>
+        <field name="domain">[('manager_id.user_id', '=', uid)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="hr_appraisal_template_action" model="ir.actions.act_window">
+        <field name="name">Appraisal Templates</field>
+        <field name="res_model">hr.appraisal.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Top Menu (already exists in database as ID 603) -->
+    <!-- We don't create it here to avoid duplicates -->
+
+    <!-- Sub Menus (already exist in database) -->
+    <!-- We don't create them here to avoid duplicates -->
+
+</odoo>

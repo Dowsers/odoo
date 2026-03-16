@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_appraisal_request_wizard_view_form" model="ir.ui.view">
+        <field name="name">hr.appraisal.request.wizard.form</field>
+        <field name="model">hr.appraisal.request.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Request Appraisal">
+                <group>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                    <field name="template_id"/>
+                    <field name="date_open"/>
+                    <field name="manager_id"/>
+                </group>
+                <footer>
+                    <button name="action_request_appraisal" string="Create Appraisals" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
