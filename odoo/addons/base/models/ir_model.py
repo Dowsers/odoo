@@ -1764,7 +1764,7 @@ class IrModelFieldsSelection(models.Model):
             if Model is None:
                 continue
             field = Model._fields.get(selection.field_id.name)
-            if not field or not field.store or not Model._auto:
+            if not field or field.type != 'selection' or not field.store or not Model._auto:
                 continue
 
             ondelete = (field.ondelete or {}).get(selection.value)
