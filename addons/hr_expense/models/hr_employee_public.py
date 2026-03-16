@@ -5,6 +5,7 @@ from odoo.fields import Domain
 class HrEmployee(models.Model):
     _inherit = 'hr.employee.public'
 
+    expense_manager_id = fields.Many2one('res.users', readonly=True)
     filter_for_expense = fields.Boolean(store=False, search='_search_filter_for_expense', groups="hr.group_hr_user")
 
     def _search_filter_for_expense(self, operator, value):
