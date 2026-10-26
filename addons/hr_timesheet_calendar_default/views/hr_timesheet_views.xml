@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- My Timesheets (/odoo/timesheets): calendar first, before the list (sequence 4) -->
+    <record id="hr_timesheet.act_hr_timesheet_line_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+    </record>
+</odoo>
