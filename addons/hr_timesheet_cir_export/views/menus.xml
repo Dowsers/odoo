@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Timesheets > Timesheets > CIR Export (ZIP), timesheet administrators only -->
+    <menuitem id="menu_timesheet_cir_export"
+              name="CIR Export (ZIP)"
+              parent="hr_timesheet.menu_hr_time_tracking"
+              action="action_timesheet_cir_export_wizard"
+              groups="hr_timesheet.group_timesheet_manager"
+              sequence="20"/>
+</odoo>
