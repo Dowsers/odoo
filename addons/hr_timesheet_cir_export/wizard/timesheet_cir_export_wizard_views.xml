@@ -5,10 +5,7 @@
         <field name="model">hr.timesheet.cir.export.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <p class="text-muted">
-                    One workbook per employee (synthesis, one sheet per month), from January 1st to the end of the selected month.
-                    Times are converted from hours to days with the employee's working schedule.
-                </p>
+                <p class="text-muted">One workbook per employee (synthesis, one sheet per month, controls), from January 1st to the end of the selected month. Times are converted to days; absences on weekends and public holidays are left out.</p>
                 <group>
                     <group>
                         <field name="year"/>

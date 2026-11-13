@@ -10,10 +10,16 @@ The workbook layout follows the "Rapport mensuel d'activité - CIR" template:
 * one sheet per month (``Janvier`` ... ``Décembre``): employee header,
   one row per project / task, one column per day, totals, signature block
   and legend;
-* ``Jours Feriés``: list of the public holidays of the year.
+* ``Jours Feriés``: list of the public holidays of the year;
+* ``Contrôles``: the inconsistencies to correct in Odoo (activity on a
+  weekend or a public holiday, more than one day logged on a date).
 
-Times entered in hours in Odoo are converted to days using the working
-hours per day of the employee's working schedule (1 day = 8 h by default).
+Times are stored in hours in Odoo and converted to days using the length
+of one day (the day of the timesheet encoding unit when timesheets are
+encoded in days, otherwise the working schedule's day). Weekends and public
+holidays are not working days: absences logged on them are left out, and
+activities logged on them are flagged. The rules on public holidays,
+absences and day length come from hr_timesheet_consistency.
 """
 import io
 import re
@@ -21,27 +27,31 @@ import zipfile
 from calendar import monthrange
 from datetime import date, datetime, timedelta
 
-import pytz
-
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
-from odoo.tools import float_round
+from odoo.tools import float_compare, float_round
+
+from odoo.addons.hr_timesheet_consistency.models.timesheet_day_rules import ADMIN_GROUP
 
 try:
     import xlsxwriter
 except ImportError:  # pragma: no cover
     xlsxwriter = None
 
-ADMIN_GROUP = 'hr_timesheet.group_timesheet_manager'
-
 MONTHS_FR = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
     'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
 ]
+WEEKDAYS_FR = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 ABSENCE_LABEL = 'Absence / Congés'
-# Tasks whose name matches one of these patterns (case-insensitive) are
-# reported on the "Absence / Congés" row by default.
-ABSENCE_TASK_PATTERNS = ('congé', 'conge', 'férié', 'ferie', 'time off', 'absence')
+REASON_WEEKEND = 'Activité saisie un week-end'
+REASON_HOLIDAY = 'Activité saisie un jour férié (%s)'
+REASON_OVER_ONE_DAY = "Plus d'une journée saisie sur la date"
+REASON_NEGATIVE = 'Temps négatif saisi, non repris'
+NO_ANOMALY = 'Aucune anomalie détectée sur la période.'
+ANOMALY_COLOR = '#FFC000'
+# User texts (task names, descriptions...) must never become formulas or links
+WORKBOOK_OPTIONS = {'in_memory': True, 'remove_timezone': True, 'strings_to_formulas': False, 'strings_to_urls': False}
 
 # Month sheet layout (0-based indexes)
 COL_PROJECT = 0        # A
@@ -61,39 +71,6 @@ README_HOL_FIRST_ROW = 8
 README_HOL_LAST_ROW = 39
 
 _INVALID_FILENAME_CHARS = re.compile(r'[\\/:*?"<>|\x00-\x1f]+')
-
-
-def easter_date(year):
-    """Gregorian Easter Sunday (Meeus / Jones / Butcher algorithm)."""
-    a = year % 19
-    b, c = divmod(year, 100)
-    d, e = divmod(b, 4)
-    f = (b + 8) // 25
-    g = (b - f + 1) // 3
-    h = (19 * a + b - d - g + 15) % 30
-    i, k = divmod(c, 4)
-    l = (32 + 2 * e + 2 * i - h - k) % 7
-    m = (a + 11 * h + 22 * l) // 451
-    month, day = divmod(h + l - 7 * m + 114, 31)
-    return date(year, month, day + 1)
-
-
-def french_public_holidays(year):
-    """French public holidays of ``year`` as a list of (date, label)."""
-    easter = easter_date(year)
-    return [
-        (date(year, 1, 1), "Jour de l'an"),
-        (easter + timedelta(days=1), 'Lundi de Pâques'),
-        (date(year, 5, 1), 'Fête du Travail'),
-        (date(year, 5, 8), 'Victoire 1945'),
-        (easter + timedelta(days=39), 'Ascension'),
-        (easter + timedelta(days=50), 'Lundi de Pentecôte'),
-        (date(year, 7, 14), 'Fête Nationale'),
-        (date(year, 8, 15), 'Assomption'),
-        (date(year, 11, 1), 'Toussaint'),
-        (date(year, 11, 11), 'Armistice 1918'),
-        (date(year, 12, 25), 'Noël'),
-    ]
 
 
 def split_employee_name(name):
@@ -178,61 +155,46 @@ class TimesheetCirExport(models.AbstractModel):
 
     @api.model
     def _get_default_absence_tasks(self):
-        """Tasks reported on the "Absence / Congés" row: the company time off
-        task (project_timesheet_holidays) and the tasks named like a leave."""
-        Task = self.env['project.task'].with_context(active_test=False)
-        tasks = Task
-        companies = self.env.companies
-        if 'leave_timesheet_task_id' in companies._fields:
-            tasks |= companies.sudo().leave_timesheet_task_id.with_env(self.env)
-        domain = ['|'] * (len(ABSENCE_TASK_PATTERNS) - 1)
-        domain += [('name', 'ilike', pattern) for pattern in ABSENCE_TASK_PATTERNS]
-        tasks |= Task.search(domain)
-        return tasks.exists()
+        """Tasks reported on the "Absence / Congés" row: the tasks flagged as
+        absences and the time off task of the companies, among those the user
+        can read."""
+        return self.env['hr.timesheet.day.rules']._get_absence_tasks()._filtered_access('read')
 
     @api.model
     def _get_hours_per_day(self, employee):
-        calendar = (
-            employee.resource_calendar_id
-            or employee.company_id.resource_calendar_id
-            or self.env.company.resource_calendar_id
-        )
-        return calendar.hours_per_day or 8.0
+        return self.env['hr.timesheet.day.rules']._get_hours_per_day(employee)
 
     @api.model
-    def _get_holidays(self, year):
-        """Public holidays of ``year``: French public holidays completed /
-        overridden by the global leaves of the working schedules (Odoo).
+    def _get_holidays(self, year, employee=None):
+        """Public holidays of ``year`` that apply to ``employee``: French
+        public holidays and public holidays recorded in Odoo.
 
         :return: sorted list of (date, label, source)
         """
-        holidays = {day: (label, 'Calendrier') for day, label in french_public_holidays(year)}
-        Leaves = self.env['resource.calendar.leaves'].sudo()
-        domain = [
-            ('resource_id', '=', False),
-            ('date_from', '<=', datetime(year, 12, 31, 23, 59, 59)),
-            ('date_to', '>=', datetime(year, 1, 1)),
-            ('company_id', 'in', [False] + self.env.companies.ids),
-        ]
-        for leave in Leaves.search(domain):
-            tz = pytz.timezone(leave.calendar_id.tz or leave.company_id.resource_calendar_id.tz or 'UTC')
-            start = pytz.utc.localize(leave.date_from).astimezone(tz).date()
-            stop = pytz.utc.localize(leave.date_to).astimezone(tz).date()
-            day = max(start, date(year, 1, 1))
-            while day <= min(stop, date(year, 12, 31)):
-                holidays[day] = (leave.name or holidays.get(day, ('Fermeture',))[0], 'Odoo')
-                day += timedelta(days=1)
-        return [(day, label, source) for day, (label, source) in sorted(holidays.items())]
+        holidays = self.env['hr.timesheet.day.rules']._get_public_holidays(year, employee)
+        return [(day, label, source) for day, (label, source) in holidays.items()]
 
     @api.model
-    def _collect_employee_data(self, employee, date_from, date_to, absence_task_ids):
+    def _collect_employee_data(self, employee, date_from, date_to, absence_task_ids, holidays=None):
         """Gather the timesheets of ``employee`` between the two dates.
 
-        :return: dict with ``hours_per_day`` and ``rows``; each row is a dict
-            ``{'is_absence', 'project', 'task', 'days': {date: days},
-            'notes': {month: [descriptions]}}``, the absence row first and
-            the other rows sorted by project then task.
+        Weekends and public holidays (``holidays``: list of (date, label,
+        source)) are not working days: absences logged on them are left out,
+        activities logged on them are kept and reported as anomalies, like the
+        dates holding more than one day. An absence logged by hand and the
+        absence Odoo generates for the same time off count once (the larger).
+
+        :return: dict with ``hours_per_day``, ``rows`` and ``anomalies``. Each
+            row is a dict ``{'is_absence', 'project', 'task', 'days': {date:
+            days}, 'notes': {month: [descriptions]}}``, the absence row first
+            and the other rows sorted by project then task. Each anomaly is a
+            dict ``{'date', 'reason', 'project', 'task', 'days'}``, sorted by
+            date.
         """
+        rules = self.env['hr.timesheet.day.rules']
+        if holidays is None:
+            holidays = self._get_holidays(date_from.year, employee)
+        holiday_labels = {day: label for day, label, _source in holidays}
         Line = self.env['account.analytic.line']
         fields_to_read = ['date', 'project_id', 'task_id', 'unit_amount', 'name']
         for optional in ('holiday_id', 'global_leave_id'):
@@ -246,28 +208,45 @@ class TimesheetCirExport(models.AbstractModel):
         ], fields_to_read, order='date, id')
 
         hours_per_day = self._get_hours_per_day(employee)
+        day_limit = rules._get_day_limit(employee)
         hours = {}      # (key, date) -> hours
+        negatives = []  # anomalies of negative times, which are not counted
+        absences = {}   # date -> [generated hours, hours logged by hand]
         notes = {}      # (key, month) -> [description, ...]
         names = {}      # key -> (project name, task name)
         for line in lines:
             task_id = line['task_id'] and line['task_id'][0]
-            is_absence = bool(
-                line.get('holiday_id') or line.get('global_leave_id')
-                or (task_id and task_id in absence_task_ids)
-            )
+            line_date = fields.Date.to_date(line['date'])
+            is_absence = rules._is_absence(task_id, absence_task_ids)
+            if is_absence and (line_date.weekday() >= 5 or line_date in holiday_labels):
+                # not a working day: the absence only marks the weekend or the public holiday
+                continue
             if is_absence:
                 key = ('absence',)
                 names[key] = (ABSENCE_LABEL, '')
             else:
                 key = (line['project_id'][0], task_id or 0)
                 names[key] = (line['project_id'][1], line['task_id'][1] if task_id else '')
-            line_date = fields.Date.to_date(line['date'])
-            hours[(key, line_date)] = hours.get((key, line_date), 0.0) + (line['unit_amount'] or 0.0)
+            amount = line['unit_amount'] or 0.0
+            if amount < 0:
+                # like the consistency checks, negative times count as 0
+                negatives.append({
+                    'date': line_date, 'reason': REASON_NEGATIVE, 'project': names[key][0], 'task': names[key][1],
+                    'days': float_round(amount / hours_per_day, precision_digits=2),
+                })
+                amount = 0.0
+            if is_absence:
+                bucket = absences.setdefault(line_date, [0.0, 0.0])
+                bucket[0 if (line.get('holiday_id') or line.get('global_leave_id')) else 1] += amount
+            else:
+                hours[(key, line_date)] = hours.get((key, line_date), 0.0) + amount
             description = (line['name'] or '').strip()
             if description and description != '/':
                 bucket = notes.setdefault((key, line_date.month), [])
                 if description not in bucket:
                     bucket.append(description)
+        for line_date, (generated, logged) in absences.items():
+            hours[(('absence',), line_date)] = max(generated, logged)
 
         rows = []
         for key, (project_name, task_name) in names.items():
@@ -283,7 +262,31 @@ class TimesheetCirExport(models.AbstractModel):
                 'notes': {month: texts for (row_key, month), texts in notes.items() if row_key == key},
             })
         rows.sort(key=lambda r: (not r['is_absence'], r['project'].lower(), r['task'].lower()))
-        return {'hours_per_day': hours_per_day, 'rows': rows}
+
+        anomalies = list(negatives)
+        day_totals = {}
+        for (key, day), amount in hours.items():
+            day_totals[day] = day_totals.get(day, 0.0) + amount
+            if key == ('absence',) or not amount:
+                continue
+            if day in holiday_labels:
+                reason = REASON_HOLIDAY % holiday_labels[day]
+            elif day.weekday() >= 5:
+                reason = REASON_WEEKEND
+            else:
+                continue
+            anomalies.append({
+                'date': day, 'reason': reason, 'project': names[key][0], 'task': names[key][1],
+                'days': float_round(amount / hours_per_day, precision_digits=2),
+            })
+        for day, amount in day_totals.items():
+            if float_compare(amount, day_limit, precision_digits=2) > 0:
+                anomalies.append({
+                    'date': day, 'reason': REASON_OVER_ONE_DAY, 'project': '', 'task': '',
+                    'days': float_round(amount / hours_per_day, precision_digits=2),
+                })
+        anomalies.sort(key=lambda a: (a['date'], a['reason'] == REASON_OVER_ONE_DAY, a['project'].lower(), a['task'].lower()))
+        return {'hours_per_day': hours_per_day, 'rows': rows, 'anomalies': anomalies}
 
     # ------------------------------------------------------------------
     # Workbook
@@ -317,10 +320,6 @@ class TimesheetCirExport(models.AbstractModel):
             'tot_label': wb.add_format(dict(base, align='right', bottom=4)),
             'tot_val': wb.add_format(dict(base, bold=True, align='center', bottom=4, num_format='0.##')),
             'tot_unit': wb.add_format(dict(base, bold=True, align='left', bottom=4)),
-            'soit': wb.add_format({'font_name': 'Arial', 'font_size': 10, 'top': 4, 'bottom': 4}),
-            'soit_val': wb.add_format({'font_name': 'Arial', 'font_size': 10, 'bold': True, 'italic': True,
-                                       'align': 'center', 'top': 4, 'bottom': 4, 'num_format': '0.##'}),
-            'soit_unit': wb.add_format({'font_name': 'Arial', 'font_size': 10, 'bold': True, 'italic': True, 'top': 4, 'bottom': 4}),
             'sig_hdr': wb.add_format(dict(base, bg_color='#000000', font_color='#FFFFFF', align='center')),
             'sig': wb.add_format(dict(base, align='left', valign='top')),
             'legend': wb.add_format(dict(base, align='left', valign='top', text_wrap=True)),
@@ -329,12 +328,15 @@ class TimesheetCirExport(models.AbstractModel):
             'leg_blue': wb.add_format(dict(base, bg_color='#00B0F0')),
             'leg_hatch': wb.add_format(dict(base, pattern=8, fg_color='#000000', bg_color='#FFFFFF')),
             'leg_grey': wb.add_format(dict(base, bg_color='#808080')),
+            'leg_orange': wb.add_format(dict(base, bg_color=ANOMALY_COLOR)),
             'cf_weekend': wb.add_format({'bg_color': '#00B0F0'}),
             'cf_holiday': wb.add_format({'pattern': 8, 'fg_color': '#000000', 'bg_color': '#FFFFFF'}),
             'cf_bad': wb.add_format({'bg_color': '#C00000', 'font_color': '#FFFFFF', 'bold': True}),
+            'cf_anomaly': wb.add_format({'bg_color': ANOMALY_COLOR, 'font_color': '#000000', 'bold': True}),
             # Synthesis sheet
             'syn_title': wb.add_format({'font_name': 'Arial Narrow', 'font_size': 20, 'align': 'left'}),
             'syn_sub': wb.add_format(dict(base, italic=True)),
+            'syn_alert': wb.add_format(dict(base, bold=True, font_color='#C00000')),
             'syn_hdr': wb.add_format({'font_name': 'Arial Narrow', 'font_size': 11, 'bold': True, 'bg_color': '#000000',
                                       'font_color': '#FFFFFF', 'align': 'left', 'valign': 'vcenter', 'text_wrap': True,
                                       'left': 1, 'right': 1, 'top': 1, 'bottom': 1}),
@@ -357,6 +359,11 @@ class TimesheetCirExport(models.AbstractModel):
             'hol_hdr': wb.add_format(dict(hdr, text_wrap=False)),
             'hol_date': wb.add_format(dict(base, num_format='dd/mm/yyyy', bottom=4)),
             'hol_text': wb.add_format(dict(base, bottom=4)),
+            # Controls sheet
+            'ctl_title': wb.add_format(dict(base, bold=True, font_size=12)),
+            'ctl_date': wb.add_format(dict(base, num_format='dd/mm/yyyy', bottom=4, align='left')),
+            'ctl_text': wb.add_format(dict(base, bottom=4)),
+            'ctl_num': wb.add_format(dict(base, bottom=4, align='center', num_format='0.##')),
         }
         return F
 
@@ -370,23 +377,22 @@ class TimesheetCirExport(models.AbstractModel):
         if xlsxwriter is None:  # pragma: no cover
             raise UserError(_("The Python library xlsxwriter is required to export the timesheets."))
         year, month = int(year), int(month)
-        holidays = holidays if holidays is not None else self._get_holidays(year)
+        holidays = holidays if holidays is not None else self._get_holidays(year, employee)
         holiday_dates = {day for day, _label, _source in holidays}
         rows = data['rows']
-        hours_per_day = data['hours_per_day']
+        anomalies = data.get('anomalies', [])
         employee = employee.sudo()
         first_name, last_name = split_employee_name(employee.name)
         header = {
             'last_name': last_name,
             'first_name': first_name,
             'matricule': employee.barcode or '',
-            'hours_per_day': hours_per_day,
             'phone': employee.work_phone or '',
         }
         date_from, date_to = self._period_bounds(year, month)
 
         output = io.BytesIO()
-        wb = xlsxwriter.Workbook(output, {'in_memory': True, 'remove_timezone': True})
+        wb = xlsxwriter.Workbook(output, WORKBOOK_OPTIONS)
         wb.set_properties({
             'title': "Rapport mensuel d'activité - CIR %s - %s" % (year, employee.name),
             'subject': 'Feuilles de temps %s' % year,
@@ -399,6 +405,7 @@ class TimesheetCirExport(models.AbstractModel):
         ws_readme = wb.add_worksheet('ReadMe')
         month_sheets = [wb.add_worksheet(name) for name in MONTHS_FR]
         ws_holidays = wb.add_worksheet('Jours Feriés')
+        ws_controls = wb.add_worksheet('Contrôles')
 
         row_month_totals = {}   # (row index, month) -> days of the month (cached values)
         for index, ws in enumerate(month_sheets):
@@ -407,9 +414,10 @@ class TimesheetCirExport(models.AbstractModel):
             for row_index, value in enumerate(totals):
                 row_month_totals[(row_index, index + 1)] = value
 
-        self._write_synthesis_sheet(ws_synthesis, F, year, employee, rows, row_month_totals, date_from, date_to, hours_per_day)
-        self._write_readme_sheet(ws_readme, F, year, hours_per_day, holidays, date_from, date_to)
+        self._write_synthesis_sheet(ws_synthesis, F, year, employee, rows, row_month_totals, date_from, date_to, anomalies)
+        self._write_readme_sheet(ws_readme, F, year, holidays, date_from, date_to)
         self._write_holidays_sheet(ws_holidays, F, holidays)
+        self._write_controls_sheet(ws_controls, F, anomalies, employee.name, date_from, date_to)
         ws_synthesis.activate()
         wb.close()
         return output.getvalue()
@@ -421,9 +429,8 @@ class TimesheetCirExport(models.AbstractModel):
         n = len(rows)
         row_last = ROW_FIRST + n - 1
         row_tot = ROW_FIRST + n          # "Total du mois"
-        row_soit = row_tot + 1
-        row_sig = row_tot + 3            # signature block (3 rows)
-        row_leg = row_sig + 7            # legend (2 rows)
+        row_sig = row_tot + 2            # signature block (3 rows)
+        row_leg = row_sig + 7            # legend (4 rows)
         month_name = MONTHS_FR[month - 1]
 
         ws.set_column(COL_PROJECT, COL_PROJECT, 24)
@@ -445,8 +452,7 @@ class TimesheetCirExport(models.AbstractModel):
         blocks = [
             (0, 1, 'Nom', header['last_name'], F['hdr_val']),
             (2, 9, 'Prénom', header['first_name'], F['hdr_val']),
-            (10, 16, 'Matricule', header['matricule'], F['hdr_val']),
-            (17, 21, 'Heures / jour', header['hours_per_day'], F['hdr_val']),
+            (10, 21, 'Matricule', header['matricule'], F['hdr_val']),
             (22, 26, 'Mois', month_name, F['hdr_val']),
             (27, 31, 'Année', year, F['hdr_val_year']),
             (32, 33, 'Nb jours ouvrés', None, F['hdr_val']),
@@ -524,18 +530,12 @@ class TimesheetCirExport(models.AbstractModel):
                     '=SUM(%s$%d:%s$%d)' % (letter, ROW_FIRST + 1, letter, row_last + 1),
                     F['colsum'], float_round(column_totals[d], precision_digits=2))
 
-        # Month total and hours
+        # Month total
         month_total = float_round(sum(row_totals), precision_digits=2)
         ws.merge_range(row_tot, 28, row_tot, 32, 'Total du mois : ', F['tot_label'])
         total_formula = '=SUM(%s%d:%s%d)' % (col_letter(COL_TOTAL), ROW_FIRST + 1, col_letter(COL_TOTAL), row_last + 1) if n else '=0'
         ws.write_formula(row_tot, COL_TOTAL, total_formula, F['tot_val'], month_total)
         ws.write(row_tot, COL_OBS, 'jours', F['tot_unit'])
-        ws.write(row_soit, 31, 'Soit', F['soit'])
-        ws.write_formula(
-            row_soit, COL_TOTAL,
-            '=%s%d*$R$%d' % (col_letter(COL_TOTAL), row_tot + 1, ROW_HDR_VAL + 1),
-            F['soit_val'], float_round(month_total * header['hours_per_day'], precision_digits=2))
-        ws.write(row_soit, COL_OBS, 'heures', F['soit_unit'])
 
         # Signature block
         ws.merge_range(row_sig, 0, row_sig, 8, 'COLLABORATEUR', F['sig_hdr'])
@@ -559,36 +559,50 @@ class TimesheetCirExport(models.AbstractModel):
         ws.write_blank(row_leg, 30, None, F['leg_grey'])
         ws.write(row_leg, 31, ':', F['legend_sep'])
         ws.merge_range(row_leg, 32, row_leg, 33, 'Jours inexistants', F['legend'])
+        ws.write_blank(row_leg + 3, 2, None, F['leg_orange'])
+        ws.write(row_leg + 3, 3, ':', F['legend_sep'])
+        ws.merge_range(
+            row_leg + 3, 4, row_leg + 3, 33,
+            "Activité saisie un week-end ou un jour férié, ou plus d'une journée saisie sur une date "
+            "(ligne des totaux) : à vérifier, voir l'onglet Contrôles.", F['legend'])
 
-        # Conditional formats on the day cells (weekends, holidays, unexpected values)
+        # Conditional formats on the day cells: activity on a non-working day,
+        # weekends, holidays, unexpected values; more than one day on a date
         if n:
             first_cell = '%s%d' % (col_letter(COL_DAY1), ROW_FIRST + 1)
             day_header = '%s$%d' % (col_letter(COL_DAY1), ROW_DAYS + 1)
+            is_weekend = 'WEEKDAY(%s,2)>=6' % day_header
+            is_holiday = 'COUNTIF(ReadMe!$A$%d:$A$%d,%s)>0' % (
+                README_HOL_FIRST_ROW + 1, README_HOL_LAST_ROW + 1, day_header)
             cf_range = (ROW_FIRST, COL_DAY1, row_last, COL_DAY1 + ndays - 1)
             ws.conditional_format(*cf_range, {
-                'type': 'formula', 'criteria': '=WEEKDAY(%s,2)>=6' % day_header,
+                'type': 'formula', 'criteria': '=AND(%s<>"",OR(%s,%s))' % (first_cell, is_weekend, is_holiday),
+                'format': F['cf_anomaly'], 'stop_if_true': True})
+            ws.conditional_format(*cf_range, {
+                'type': 'formula', 'criteria': '=' + is_weekend,
                 'format': F['cf_weekend'], 'stop_if_true': True})
             ws.conditional_format(*cf_range, {
-                'type': 'formula',
-                'criteria': '=COUNTIF(ReadMe!$A$%d:$A$%d,%s)>0' % (
-                    README_HOL_FIRST_ROW + 1, README_HOL_LAST_ROW + 1, day_header),
+                'type': 'formula', 'criteria': '=' + is_holiday,
                 'format': F['cf_holiday'], 'stop_if_true': True})
             ws.conditional_format(*cf_range, {
                 'type': 'formula', 'criteria': '=AND(%s<>1,%s<>0.5,%s<>"")' % (first_cell, first_cell, first_cell),
                 'format': F['cf_bad']})
+            ws.conditional_format(ROW_COLSUM, COL_DAY1, ROW_COLSUM, COL_DAY1 + ndays - 1, {
+                'type': 'formula', 'criteria': '=ROUND(%s%d,2)>1' % (col_letter(COL_DAY1), ROW_COLSUM + 1),
+                'format': F['cf_anomaly']})
 
         # Page setup
         ws.set_landscape()
         ws.set_paper(9)
         ws.fit_to_pages(1, 1)
         ws.set_margins(left=0.3, right=0.3, top=0.4, bottom=0.4)
-        ws.print_area(0, 0, row_leg + 1, COL_OBS)
+        ws.print_area(0, 0, row_leg + 3, COL_OBS)
         ws.hide_gridlines(2)
         ws.set_zoom(85)
         return row_totals
 
     @api.model
-    def _write_synthesis_sheet(self, ws, F, year, employee, rows, row_month_totals, date_from, date_to, hours_per_day=8.0):
+    def _write_synthesis_sheet(self, ws, F, year, employee, rows, row_month_totals, date_from, date_to, anomalies=()):
         n = len(rows)
         COL_P, COL_T, COL_M1 = 1, 2, 3          # B, C, D..O
         COL_TOT = COL_M1 + 12                   # P
@@ -607,8 +621,12 @@ class TimesheetCirExport(models.AbstractModel):
         ws.write(4, COL_P, "Synthèse du temps passé par projet sur l'année %s" % year, F['syn_title'])
         ws.write(5, COL_P, '%s - période du %s au %s' % (
             employee.name, date_from.strftime('%d/%m/%Y'), date_to.strftime('%d/%m/%Y')), F['syn_sub'])
-        ws.write(6, COL_P, 'Généré depuis Odoo le %s - valeurs en jours (1 jour = %g h)' % (
-            fields.Date.context_today(self).strftime('%d/%m/%Y'), hours_per_day), F['syn_sub'])
+        ws.write(6, COL_P, 'Généré depuis Odoo le %s - valeurs en jours' % (
+            fields.Date.context_today(self).strftime('%d/%m/%Y')), F['syn_sub'])
+        if anomalies:
+            ws.write(7, COL_P, "%d anomalie(s) à vérifier : voir l'onglet Contrôles." % len(anomalies), F['syn_alert'])
+        else:
+            ws.write(7, COL_P, NO_ANOMALY, F['syn_sub'])
 
         ws.write(ROW_H, COL_P, 'Projet', F['syn_hdr'])
         ws.write(ROW_H, COL_T, 'Etape', F['syn_hdr'])
@@ -663,7 +681,7 @@ class TimesheetCirExport(models.AbstractModel):
         ws.set_zoom(85)
 
     @api.model
-    def _write_readme_sheet(self, ws, F, year, hours_per_day, holidays, date_from, date_to):
+    def _write_readme_sheet(self, ws, F, year, holidays, date_from, date_to):
         ws.set_column(0, 0, 20)
         ws.set_column(1, 1, 110)
         ws.write(1, 1, 'UTILISATION DU FICHIER DE SUIVI DU TEMPS', F['rm_title'])
@@ -672,17 +690,18 @@ class TimesheetCirExport(models.AbstractModel):
             "(année en cours arrêtée au dernier mois révolu)." % (
                 fields.Date.context_today(self).strftime('%d/%m/%Y'),
                 date_from.strftime('%d/%m/%Y'), date_to.strftime('%d/%m/%Y')),
-            "Les temps saisis en heures dans Odoo sont convertis en jours (1 jour = %s h, horaire de travail du collaborateur) : "
-            "1 = journée complète, 0,5 = demi-journée. Toute autre valeur est signalée en rouge dans les onglets mensuels." % (
-                ('%g' % hours_per_day)),
-            "Chaque onglet mensuel reprend, par projet et étape (tâche Odoo), les jours passés par date ; la colonne Observations "
-            "reprend les descriptions saisies. L'onglet Synthèse totalise les mois ; la ligne « Absence / Congés » n'est pas "
-            "comptée dans le TOTAL.",
+            "Les temps saisis dans Odoo sont exprimés en jours : 1 = journée complète, 0,5 = demi-journée. "
+            "Toute autre valeur est signalée en rouge dans les onglets mensuels.",
+            "Les week-ends et jours fériés ne sont pas des jours ouvrés : les absences saisies ces jours-là ne sont pas reprises. "
+            "Une activité saisie un jour non ouvré, ou plus d'une journée saisie sur une même date, est signalée en orange et "
+            "listée dans l'onglet Contrôles, pour vérification et, si besoin, correction dans Odoo. Une absence saisie à la "
+            "main et celle générée par Odoo pour le même congé ne comptent qu'une fois. La ligne « Absence / Congés » n'est "
+            "pas comptée dans le TOTAL de la synthèse.",
         ]
         for i, text in enumerate(notes):
             ws.write(2 + i, 0, '%d.' % (i + 1), F['rm_num'])
             ws.write(2 + i, 1, text, F['rm_text'])
-            ws.set_row(2 + i, 30)
+            ws.set_row(2 + i, 45 if i == 2 else 30)
         ws.write(5, 0, 'NE PAS SUPPRIMER', F['rm_warn'])
         ws.write(6, 0, 'Année', F['rm_label'])
         ws.write_number(6, 1, year, F['rm_year'])
@@ -704,9 +723,72 @@ class TimesheetCirExport(models.AbstractModel):
             ws.write(1 + i, 1, label, F['hol_text'])
             ws.write(1 + i, 2, source, F['hol_text'])
 
+    @api.model
+    def _write_controls_sheet(self, ws, F, anomalies, employee_name=None, date_from=None, date_to=None):
+        """List the inconsistencies to correct in Odoo. Without
+        ``employee_name`` (summary of all employees), each anomaly carries its
+        ``employee``."""
+        with_employee = employee_name is None
+        columns = (['Collaborateur'] if with_employee else []) + ['Date', 'Jour', 'Motif', 'Projet', 'Etape', 'Jours']
+        widths = ([28] if with_employee else []) + [12, 11, 46, 26, 36, 8]
+        for col, width in enumerate(widths):
+            ws.set_column(col, col, width)
+        title = 'Contrôles de cohérence des feuilles de temps'
+        if not with_employee:
+            title += ' - %s' % employee_name
+        ws.write(0, 0, title, F['ctl_title'])
+        if date_from and date_to:
+            ws.write(1, 0, 'Période du %s au %s. Ces anomalies sont à vérifier et, si besoin, à corriger dans Odoo, '
+                           'avant de régénérer les fichiers.' % (
+                date_from.strftime('%d/%m/%Y'), date_to.strftime('%d/%m/%Y')), F['syn_sub'])
+        for col, label in enumerate(columns):
+            ws.write(3, col, label, F['hol_hdr'])
+        if not anomalies:
+            ws.write(4, 0, NO_ANOMALY, F['rm_plain'])
+        for i, anomaly in enumerate(anomalies):
+            r = 4 + i
+            col = 0
+            if with_employee:
+                ws.write(r, col, anomaly.get('employee') or '', F['ctl_text'])
+                col += 1
+            day = anomaly['date']
+            ws.write_datetime(r, col, datetime(day.year, day.month, day.day), F['ctl_date'])
+            ws.write(r, col + 1, WEEKDAYS_FR[day.weekday()], F['ctl_text'])
+            ws.write(r, col + 2, anomaly['reason'], F['ctl_text'])
+            ws.write(r, col + 3, anomaly['project'], F['ctl_text'])
+            ws.write(r, col + 4, anomaly['task'], F['ctl_text'])
+            ws.write_number(r, col + 5, anomaly['days'], F['ctl_num'])
+        if anomalies:
+            ws.autofilter(3, 0, 3 + len(anomalies), len(columns) - 1)
+        ws.freeze_panes(4, 0)
+        ws.set_landscape()
+        ws.set_paper(9)
+        ws.fit_to_pages(1, 0)
+        ws.hide_gridlines(2)
+
+    @api.model
+    def _generate_controls_workbook(self, year, month, anomalies):
+        """Summary workbook of the anomalies of all employees."""
+        date_from, date_to = self._period_bounds(year, month)
+        output = io.BytesIO()
+        wb = xlsxwriter.Workbook(output, WORKBOOK_OPTIONS)
+        wb.set_properties({
+            'title': 'Contrôles de cohérence - CIR %s' % year,
+            'author': self.env.company.name or '',
+            'comments': 'Généré depuis Odoo le %s' % fields.Date.context_today(self).strftime('%d/%m/%Y'),
+        })
+        F = self._workbook_formats(wb)
+        self._write_controls_sheet(wb.add_worksheet('Contrôles'), F, anomalies, None, date_from, date_to)
+        wb.close()
+        return output.getvalue()
+
     # ------------------------------------------------------------------
     # ZIP
     # ------------------------------------------------------------------
+    @api.model
+    def _controls_filename(self, year):
+        return 'Contrôles de cohérence - CIR %s.xlsx' % year
+
     @api.model
     def _workbook_filename(self, year, employee, used_names):
         name = _INVALID_FILENAME_CHARS.sub(' ', employee.name or '').strip()
@@ -732,13 +814,30 @@ class TimesheetCirExport(models.AbstractModel):
         if absence_tasks is None:
             absence_tasks = self._get_default_absence_tasks()
         absence_task_ids = set(absence_tasks.ids)
-        holidays = self._get_holidays(year)
 
         buffer = io.BytesIO()
         used_names = set()
+        holidays_cache = {}
+        all_anomalies = []
         with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:
             for employee in employees:
-                data = self._collect_employee_data(employee, date_from, date_to, absence_task_ids)
+                emp = employee.sudo()
+                calendar = emp.resource_calendar_id or emp.company_id.resource_calendar_id
+                cache_key = (calendar.id, emp.company_id.id, emp.tz)
+                if cache_key not in holidays_cache:
+                    holidays_cache[cache_key] = self._get_holidays(year, employee)
+                holidays = holidays_cache[cache_key]
+                data = self._collect_employee_data(employee, date_from, date_to, absence_task_ids, holidays)
+                if not data['anomalies'] and not any(row['days'] for row in data['rows']):
+                    # e.g. only absences on public holidays: nothing to report
+                    continue
                 content = self._generate_workbook(employee, year, month, data, holidays)
                 archive.writestr('%d/%s' % (year, self._workbook_filename(year, employee, used_names)), content)
+                all_anomalies += [dict(anomaly, employee=emp.name) for anomaly in data['anomalies']]
+            if not used_names:
+                raise UserError(_(
+                    "No timesheet found between %(date_from)s and %(date_to)s.",
+                    date_from=date_from.strftime('%d/%m/%Y'), date_to=date_to.strftime('%d/%m/%Y')))
+            archive.writestr('%d/%s' % (year, self._controls_filename(year)),
+                             self._generate_controls_workbook(year, month, all_anomalies))
         return buffer.getvalue(), 'Fiche_de_temps_%d.zip' % year
