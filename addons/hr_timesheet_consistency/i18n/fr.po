@@ -1,0 +1,100 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_timesheet_consistency
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-13 18:00+0000\n"
+"PO-Revision-Date: 2026-11-13 18:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/timesheet_day_rules.py:0
+msgid " (time off or public holiday recorded in Odoo included)"
+msgstr " (congé ou jour férié enregistré dans Odoo compris)"
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/timesheet_day_rules.py:0
+#, python-format
+msgid "%(employee)s, %(date)s (%(holiday)s)"
+msgstr "%(employee)s, le %(date)s (%(holiday)s)"
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/timesheet_day_rules.py:0
+#, python-format
+msgid "%(employee)s, %(date)s: %(days)s days logged"
+msgstr "%(employee)s, le %(date)s : %(days)s jours saisis"
+
+#. module: hr_timesheet_consistency
+#: model:ir.model.fields,field_description:hr_timesheet_consistency.field_project_task__timesheet_absence
+msgid "Absence (timesheets)"
+msgstr "Absence (feuilles de temps)"
+
+#. module: hr_timesheet_consistency
+#: model:ir.model,name:hr_timesheet_consistency.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Ligne analytique"
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/timesheet_day_rules.py:0
+#, python-format
+msgid ""
+"No activity can be logged on a public holiday:\n"
+"%s\n"
+"When logging several days at once, leave the public holidays out. Exceptional work on a public holiday must be logged by a timesheet administrator."
+msgstr ""
+"Aucune activité ne peut être saisie un jour férié :\n"
+"%s\n"
+"Pour une saisie sur plusieurs jours, désélectionnez les jours fériés. Une activité exceptionnelle un jour férié doit être saisie par un administrateur des feuilles de temps."
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/timesheet_day_rules.py:0
+#, python-format
+msgid ""
+"No more than one day can be logged on a calendar day:\n"
+"%s"
+msgstr ""
+"Impossible de saisir plus d'une journée sur un même jour calendaire :\n"
+"%s"
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/project_task.py:0
+msgid "Only timesheet administrators can mark a task as an absence."
+msgstr "Seuls les administrateurs des feuilles de temps peuvent marquer une tâche comme absence."
+
+#. module: hr_timesheet_consistency
+#. odoo-python
+#: code:addons/hr_timesheet_consistency/models/timesheet_day_rules.py:0
+msgid "Public holiday"
+msgstr "Jour férié"
+
+#. module: hr_timesheet_consistency
+#: model:ir.model,name:hr_timesheet_consistency.model_project_task
+msgid "Task"
+msgstr "Tâche"
+
+#. module: hr_timesheet_consistency
+#: model:ir.model.fields,help:hr_timesheet_consistency.field_project_task__timesheet_absence
+msgid ""
+"Timesheets on this task record an absence (leave, public holiday, RTT...), not an activity: they are allowed on public holidays and reported on the \"Absence / Congés\" row of the CIR export. Only timesheet administrators can change it. When they create a task, it is set from the name (congé, férié, time off, absence, RTT, maladie, vacances); renaming the task does not change it."
+msgstr ""
+"Les temps saisis sur cette tâche sont des absences (congé, jour férié, RTT...), pas une activité : ils sont autorisés les jours fériés et reportés sur la ligne « Absence / Congés » de l'export CIR. Seuls les administrateurs des feuilles de temps peuvent la modifier. Quand ils créent une tâche, elle est cochée d'après son nom (congé, férié, time off, absence, RTT, maladie, vacances) ; renommer la tâche ne la modifie pas."
+
+#. module: hr_timesheet_consistency
+#: model:ir.model,name:hr_timesheet_consistency.model_hr_timesheet_day_rules
+msgid "Timesheet day rules"
+msgstr "Règles des journées de feuille de temps"
