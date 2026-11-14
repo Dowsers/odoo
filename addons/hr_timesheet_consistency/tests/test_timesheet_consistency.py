@@ -18,8 +18,12 @@ class TestTimesheetConsistency(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True, no_reset_password=True))
-        cls.company = cls.env.company
+        # A company of its own: the tests do not depend on the public holidays, time off and
+        # settings of the database (e.g. public holidays imported by hr_holidays_public_fr).
+        cls.company = cls.env['res.company'].create({'name': 'Consistency Company'})
+        cls.env = cls.env(context=dict(cls.env.context, allowed_company_ids=cls.company.ids))
         cls.company.timesheet_encode_uom_id = cls.env.ref('uom.product_uom_day')
+        cls.env['ir.config_parameter'].sudo().set_param(WHIT_MONDAY_PARAM, 'True')
         cls.calendar = cls.env['resource.calendar'].create({
             'name': 'Consistency 40h', 'hours_per_day': 8.0, 'tz': 'Europe/Paris', 'company_id': cls.company.id,
         })

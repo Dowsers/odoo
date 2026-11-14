@@ -122,21 +122,38 @@ class TimesheetDayRules(models.AbstractModel):
         return str(value).strip().lower() not in ('false', '0', 'no', 'non', '')
 
     @api.model
-    def _get_public_holidays(self, year, employee=None):
-        """Public holidays of ``year`` as ``{date: (label, source)}``, sorted.
+    def _get_reference_public_holidays(self, year, employee=None):
+        """Public holidays of ``year`` that apply even when they are not
+        recorded in Odoo, as ``{date: (label, source)}``: the French public
+        holidays computed for the year (source ``'France'``; Whit Monday only
+        when it is not a worked day, see ``WHIT_MONDAY_PARAM``).
 
-        The French public holidays (source ``'France'``; Whit Monday only when
-        it is not a worked day, see ``WHIT_MONDAY_PARAM``) are completed, and
-        relabelled, by the public holidays recorded in Odoo (global time off of
-        the working schedules, source ``'Odoo'``) that apply to ``employee``
-        (company and working schedule) or, without employee, to the current
-        companies. A public holiday recorded in Odoo counts on the days whose
-        working hours it fully covers.
+        Hook: hr_holidays_public_fr returns none of them for the years whose
+        official public holidays have been imported into Odoo.
         """
-        holidays = {
+        return {
             day: (label, 'France')
             for day, label in french_public_holidays(year, self._whit_monday_worked())
         }
+
+    @api.model
+    def _get_public_holiday_source(self, leave):
+        """Source shown for a public holiday recorded in Odoo (``leave``)."""
+        return 'Odoo'
+
+    @api.model
+    def _get_public_holidays(self, year, employee=None):
+        """Public holidays of ``year`` as ``{date: (label, source)}``, sorted.
+
+        The reference public holidays (see ``_get_reference_public_holidays``)
+        are completed, and relabelled, by the public holidays recorded in Odoo
+        (global time off of the working schedules, source
+        ``_get_public_holiday_source``) that apply to ``employee`` (company and
+        working schedule) or, without employee, to the current companies. A
+        public holiday recorded in Odoo counts on the days whose working hours
+        it fully covers.
+        """
+        holidays = dict(self._get_reference_public_holidays(year, employee))
         domain = [
             ('resource_id', '=', False),
             ('date_from', '<=', datetime(year, 12, 31, 23, 59, 59) + timedelta(days=1)),
@@ -156,7 +173,7 @@ class TimesheetDayRules(models.AbstractModel):
                 if day.year != year:
                     continue
                 label = leave.name or holidays.get(day, (_('Public holiday'),))[0]
-                holidays[day] = (label, 'Odoo')
+                holidays[day] = (label, self._get_public_holiday_source(leave))
         return dict(sorted(holidays.items()))
 
     @api.model

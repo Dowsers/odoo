@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Timesheets - Consistency Checks',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Services/Timesheets',
     'summary': 'At most one day of activity per calendar day, no activity on public holidays',
     'description': """

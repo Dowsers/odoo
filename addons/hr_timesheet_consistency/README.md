@@ -3,7 +3,7 @@
 Module Odoo personnalisé qui refuse les saisies de feuilles de temps incohérentes.
 
 ## Version
-- **Version** : 19.0.1.0.0
+- **Version** : 19.0.1.1.0
 - **Catégorie** : Services/Feuilles de temps
 - **Licence** : LGPL-3
 
@@ -43,9 +43,13 @@ absence.
 
 ## Jours fériés
 
-- Les jours fériés légaux français sont calculés chaque année.
+- Les jours fériés légaux français sont calculés chaque année. Avec le module `hr_holidays_public_fr`, qui importe
+  dans Odoo la liste officielle du gouvernement (calendrier.api.gouv.fr), seuls les jours fériés d'Odoo comptent pour
+  les années importées.
 - **Le lundi de Pentecôte est considéré comme travaillé** (journée de solidarité). Pour en faire un jour férié, passez
-  le paramètre système `hr_timesheet_consistency.whit_monday_worked` à `False`.
+  le paramètre système `hr_timesheet_consistency.whit_monday_worked` à `False`. Si `hr_holidays_public_fr` est
+  installé, décochez plutôt « Lundi de Pentecôte travaillé » dans les paramètres : le réglage vaut alors pour les
+  lundis de Pentecôte à venir, voir ce module.
 - Les jours fériés enregistrés dans Odoo (Congés > Configuration > Jours fériés) s'ajoutent à la liste, pour la
   société et l'horaire de travail du collaborateur. Ils comptent pour les jours dont ils couvrent toutes les heures
   de travail : une fermeture d'une demi-journée n'est pas un jour férié.
@@ -61,7 +65,9 @@ absence.
 ## Règles partagées
 
 Le modèle abstrait `hr.timesheet.day.rules` fournit ces règles à l'export CIR (`hr_timesheet_cir_export`) : jours
-fériés, tâches d'absence et durée d'une journée.
+fériés, tâches d'absence et durée d'une journée. Deux méthodes peuvent être surchargées pour les jours fériés :
+`_get_reference_public_holidays`, la liste de référence (les fériés calculés), et `_get_public_holiday_source`, la
+source affichée pour un jour férié enregistré dans Odoo. `hr_holidays_public_fr` s'en sert pour les années importées.
 
 ## Dépendances
 
