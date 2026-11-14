@@ -38,7 +38,7 @@ construit sur le modèle `Rapport mensuel d'activité - CIR - template_V3.0.xlsx
 | `Synthèse <année>` | Une ligne par projet / étape, une colonne par mois (formules vers les onglets mensuels), total par ligne et ligne TOTAL (hors absences). |
 | `ReadMe` | Notes d'utilisation, année, liste des jours fériés (utilisée par les formules `NETWORKDAYS` et la mise en forme). |
 | `Janvier` … `Décembre` | En-tête (nom, prénom, matricule, mois, année, nb de jours ouvrés, téléphone), une ligne par projet / étape et une colonne par jour, totaux, bloc de signatures et légende. Les mois postérieurs au mois d'arrêt sont vides. |
-| `Jours Feriés` | Jours fériés de l'année : fériés français calculés et jours fériés enregistrés dans Odoo. Le lundi de Pentecôte est considéré comme travaillé, voir `hr_timesheet_consistency`. |
+| `Jours Feriés` | Jours fériés de l'année et leur source : « calendrier.api.gouv.fr » pour ceux que `hr_holidays_public_fr` importe du site du gouvernement, « Odoo » pour ceux saisis à la main dans Odoo, « France » pour les fériés français calculés des années non importées. Le lundi de Pentecôte est considéré comme travaillé, voir `hr_timesheet_consistency`. |
 | `Contrôles` | Anomalies à vérifier : activité saisie un week-end ou un jour férié, plus d'une journée saisie sur une date. |
 
 Le fichier `Contrôles de cohérence - CIR <année>.xlsx` regroupe les anomalies de tous les collaborateurs.

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Weekly import of the official French public holidays (calendrier.api.gouv.fr).
+         The first run happens a few minutes after the installation. -->
+    <record id="ir_cron_import_public_holidays" model="ir.cron">
+        <field name="name">Time Off: import the official French public holidays</field>
+        <field name="model_id" ref="model_hr_public_holiday_fr"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_import()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(minutes=10)).strftime('%Y-%m-%d %H:%M:%S')"/>
+    </record>
+</odoo>

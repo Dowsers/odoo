@@ -1,0 +1,402 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_holidays_public_fr
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-14 10:21+0000\n"
+"PO-Revision-Date: 2026-11-14 10:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid ""
+"%(created)s public holiday(s) imported and %(removed)s removed, from "
+"%(source)s."
+msgstr "%(created)s jour(s) férié(s) importé(s) et %(removed)s supprimé(s), depuis %(source)s."
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__state__existing
+msgid "Already recorded"
+msgstr "Déjà enregistré"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__alsace-moselle
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__alsace-moselle
+msgid "Alsace-Moselle"
+msgstr "Alsace-Moselle"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.constraint,message:hr_holidays_public_fr.constraint_hr_public_holiday_fr_company_date_uniq
+msgid "An official public holiday is recorded once per company and date."
+msgstr "Un jour férié officiel n'est enregistré qu'une fois par société et par date."
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid ""
+"Choose the zone of the official public holidays first: Settings, Employees, "
+"French Public Holidays."
+msgstr "Choisissez d'abord la zone des jours fériés officiels : Paramètres, Employés, Jours fériés français."
+
+#. module: hr_holidays_public_fr
+#: model:ir.model,name:hr_holidays_public_fr.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model,name:hr_holidays_public_fr.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de configuration"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__date
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.hr_public_holiday_fr_view_search
+msgid "Date"
+msgstr "Date"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__state__deleted
+msgid "Deleted in Odoo"
+msgstr "Supprimé dans Odoo"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__display_name
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_timesheet_day_rules__display_name
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_company__display_name
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_resource_calendar_leaves__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__guyane
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__guyane
+msgid "French Guiana"
+msgstr "Guyane"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__polynesie-francaise
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__polynesie-francaise
+msgid "French Polynesia"
+msgstr "Polynésie française"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid "French Public Holidays"
+msgstr "Jours fériés français"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__guadeloupe
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__guadeloupe
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__id
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_timesheet_day_rules__id
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_company__id
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_config_settings__id
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_resource_calendar_leaves__id
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.hr_public_holiday_fr_view_list
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid "Import Now"
+msgstr "Importer maintenant"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.resource_calendar_leaves_tree_inherit_fr_public_holidays
+msgid "Import Official Public Holidays"
+msgstr "Importer les jours fériés officiels"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__state__imported
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.hr_public_holiday_fr_view_search
+msgid "Imported"
+msgstr "Importé"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid ""
+"Imported every week from calendrier.api.gouv.fr into Time Off > "
+"Configuration > Public Holidays"
+msgstr "Importés chaque semaine depuis calendrier.api.gouv.fr dans Congés > Configuration > Jours fériés"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,help:hr_holidays_public_fr.field_hr_public_holiday_fr__state
+msgid ""
+"Imported: recorded in the public holidays of Odoo by the import.\n"
+"Already recorded: a public holiday of Odoo already overlapped the day; it is left as it is.\n"
+"Worked day: Whit Monday, left out as a worked day (journée de solidarité).\n"
+"Deleted in Odoo: the imported public holiday was deleted; it is not imported again.\n"
+"No longer official: the government no longer publishes it."
+msgstr "Importé : enregistré dans les jours fériés d'Odoo par l'import.\nDéjà enregistré : un jour férié d'Odoo chevauchait déjà ce jour ; il est laissé tel quel.\nJour travaillé : le lundi de Pentecôte, non importé car travaillé (journée de solidarité).\nSupprimé dans Odoo : le jour férié importé a été supprimé ; il n'est plus importé.\nN'est plus officiel : le gouvernement ne le publie plus."
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,help:hr_holidays_public_fr.field_res_config_settings__fr_whit_monday_worked
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid ""
+"Journée de solidarité: the upcoming Whit Mondays are not imported as public "
+"holidays, and activities can be logged on them. Past days are never changed."
+msgstr "Journée de solidarité : les lundis de Pentecôte à venir ne sont pas importés comme jours fériés, et des activités peuvent y être saisies. Les jours passés ne sont jamais modifiés."
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid "Last import:"
+msgstr "Dernier import :"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__martinique
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__martinique
+msgid "Martinique"
+msgstr "Martinique"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__mayotte
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__mayotte
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__metropole
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__metropole
+msgid "Metropolitan France"
+msgstr "France métropolitaine"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__nouvelle-caledonie
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__nouvelle-caledonie
+msgid "New Caledonia"
+msgstr "Nouvelle-Calédonie"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid "No import"
+msgstr "Pas d'import"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__state__withdrawn
+msgid "No longer official"
+msgstr "N'est plus officiel"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.actions.act_window,help:hr_holidays_public_fr.action_hr_public_holiday_fr
+msgid "No official public holiday imported yet"
+msgstr "Aucun jour férié officiel importé pour l'instant"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.hr_public_holiday_fr_view_search
+msgid "Not Imported"
+msgstr "Non importés"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__leave_id
+msgid "Odoo Public Holiday"
+msgstr "Jour férié Odoo"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model,name:hr_holidays_public_fr.model_hr_public_holiday_fr
+msgid "Official French public holiday"
+msgstr "Jour férié officiel français"
+
+#. module: hr_holidays_public_fr
+#: model:ir.actions.act_window,name:hr_holidays_public_fr.action_hr_public_holiday_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_company__fr_public_holidays_zone
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_config_settings__fr_public_holidays_zone
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_resource_calendar_leaves__fr_official_holiday_ids
+#: model:ir.ui.menu,name:hr_holidays_public_fr.menu_hr_public_holiday_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid "Official Public Holidays"
+msgstr "Jours fériés officiels"
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "Official public holidays"
+msgstr "Jours fériés officiels"
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "Only time off administrators can import the public holidays."
+msgstr "Seuls les administrateurs des congés peuvent importer les jours fériés."
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__name
+msgid "Public Holiday"
+msgstr "Jour férié"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_company__fr_public_holidays_sync_error
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_config_settings__fr_public_holidays_sync_error
+msgid "Public Holidays Import Error"
+msgstr "Erreur d'import des jours fériés"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_company__fr_public_holidays_sync_date
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_config_settings__fr_public_holidays_sync_date
+msgid "Public Holidays Imported On"
+msgstr "Jours fériés importés le"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model,name:hr_holidays_public_fr.model_resource_calendar_leaves
+msgid "Resource Time Off Detail"
+msgstr "Détails des congés des ressources"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__la-reunion
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__la-reunion
+msgid "Réunion"
+msgstr "La Réunion"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__saint-barthelemy
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__saint-barthelemy
+msgid "Saint Barthélemy"
+msgstr "Saint-Barthélemy"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__saint-martin
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__saint-martin
+msgid "Saint Martin"
+msgstr "Saint-Martin"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__saint-pierre-et-miquelon
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__saint-pierre-et-miquelon
+msgid "Saint Pierre and Miquelon"
+msgstr "Saint-Pierre-et-Miquelon"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__state
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.hr_public_holiday_fr_view_search
+msgid "Status"
+msgstr "Statut"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.actions.act_window,help:hr_holidays_public_fr.action_hr_public_holiday_fr
+msgid ""
+"The official French public holidays are imported every week from "
+"calendrier.api.gouv.fr into the public holidays of Odoo."
+msgstr "Les jours fériés officiels français sont importés chaque semaine depuis calendrier.api.gouv.fr dans les jours fériés d'Odoo."
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "The public holidays are up to date with %s."
+msgstr "Les jours fériés sont à jour avec %s."
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "The public holidays could not be downloaded from %(url)s: %(error)s"
+msgstr "Les jours fériés n'ont pas pu être téléchargés depuis %(url)s : %(error)s"
+
+#. module: hr_holidays_public_fr
+#: model:ir.actions.server,name:hr_holidays_public_fr.ir_cron_import_public_holidays_ir_actions_server
+msgid "Time Off: import the official French public holidays"
+msgstr "Congés : import des jours fériés officiels français"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model,name:hr_holidays_public_fr.model_hr_timesheet_day_rules
+msgid "Timesheet day rules"
+msgstr "Règles des journées de feuille de temps"
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid ""
+"Unexpected answer from %(source)s: %(count)s public holidays for %(year)s in"
+" zone %(zone)s. Nothing was changed."
+msgstr "Réponse inattendue de %(source)s : %(count)s jours fériés pour %(year)s dans la zone %(zone)s. Rien n'a été modifié."
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "Unexpected answer from %(url)s: %(entry)s is not a public holiday."
+msgstr "Réponse inattendue de %(url)s : %(entry)s n'est pas un jour férié."
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "Unexpected answer from %s: no public holiday."
+msgstr "Réponse inattendue de %s : aucun jour férié."
+
+#. module: hr_holidays_public_fr
+#. odoo-python
+#: code:addons/hr_holidays_public_fr/models/hr_public_holiday_fr.py:0
+msgid "Unknown zone of public holidays: %s"
+msgstr "Zone de jours fériés inconnue : %s"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__zone__wallis-et-futuna
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__res_company__fr_public_holidays_zone__wallis-et-futuna
+msgid "Wallis and Futuna"
+msgstr "Wallis-et-Futuna"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_res_config_settings__fr_whit_monday_worked
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.res_config_settings_view_form
+msgid "Whit Monday Is a Worked Day"
+msgstr "Lundi de Pentecôte travaillé"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields.selection,name:hr_holidays_public_fr.selection__hr_public_holiday_fr__state__worked
+msgid "Worked day"
+msgstr "Jour travaillé"
+
+#. module: hr_holidays_public_fr
+#: model_terms:ir.ui.view,arch_db:hr_holidays_public_fr.hr_public_holiday_fr_view_search
+msgid "Year"
+msgstr "Année"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,field_description:hr_holidays_public_fr.field_hr_public_holiday_fr__zone
+msgid "Zone"
+msgstr "Zone"
+
+#. module: hr_holidays_public_fr
+#: model:ir.model.fields,help:hr_holidays_public_fr.field_res_company__fr_public_holidays_zone
+#: model:ir.model.fields,help:hr_holidays_public_fr.field_res_config_settings__fr_public_holidays_zone
+msgid ""
+"Zone whose official public holidays, published by the government on "
+"calendrier.api.gouv.fr, are imported every week into the public holidays of "
+"the company. Leave empty to stop the import."
+msgstr "Zone dont les jours fériés officiels, publiés par le gouvernement sur calendrier.api.gouv.fr, sont importés chaque semaine dans les jours fériés de la société. Laisser vide pour arrêter l'import."

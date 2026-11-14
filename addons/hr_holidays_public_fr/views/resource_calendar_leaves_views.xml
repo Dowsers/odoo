@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import button in Time Off > Configuration > Public Holidays -->
+    <record id="resource_calendar_leaves_tree_inherit_fr_public_holidays" model="ir.ui.view">
+        <field name="name">resource.calendar.leaves.list.fr.public.holidays</field>
+        <field name="model">resource.calendar.leaves</field>
+        <field name="inherit_id" ref="hr_holidays.resource_calendar_leaves_tree_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <header>
+                    <button name="action_import_fr_public_holidays" type="object"
+                            string="Import Official Public Holidays" icon="fa-download" display="always"
+                            groups="hr_holidays.group_hr_holidays_manager,base.group_system"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>
