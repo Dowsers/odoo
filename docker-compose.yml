@@ -5,10 +5,18 @@
 # Secrets et adresse : fichier .env, à créer à partir de .env.example. Procédure : docker/README.md.
 name: odoo
 
+# Journaux des conteneurs limités à 5 fichiers de 20 Mo chacun.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+
 services:
   db:
     image: postgres:18
     restart: unless-stopped
+    logging: *logging
     environment:
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}
@@ -25,9 +33,13 @@ services:
     build: .
     image: odoowsers/odoo:19.0
     restart: unless-stopped
+    logging: *logging
     depends_on:
       db:
         condition: service_healthy
+        # Odoo est relancé quand PostgreSQL l'est par docker compose : ses actions planifiées ne
+        # survivent pas à une coupure de la base.
+        restart: true
     environment:
       DB_HOST: db
       DB_USER: odoo
@@ -44,11 +56,13 @@ services:
       timeout: 5s
       retries: 5
       start_period: 60s
+      start_interval: 5s
 
   # Renvoie les anciennes adresses HTTP (ports 80 et 8069 du nom Tailscale) vers HTTPS_URL.
   redirect:
     image: python:3.11-alpine
     restart: unless-stopped
+    logging: *logging
     user: "65534:65534"
     read_only: true
     command: ["python3", "/redirect_https.py"]

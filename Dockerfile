@@ -1,5 +1,6 @@
 # Odoo 19, branche odoowsers : même socle que le serveur d'origine.
-#   - Debian 12 (bookworm) et ses paquets python3-*, soit les dépendances du paquet Debian « odoo » ;
+#   - Debian 12 (bookworm) et ses paquets python3-*, soit les dépendances du paquet Debian « odoo »
+#     et les bibliothèques facultatives présentes sur le serveur (html5lib, olefile, packaging, pygments) ;
 #   - client PostgreSQL 18 du dépôt PGDG, requis par « odoo db dump » et « odoo db load » ;
 #   - wkhtmltopdf de Debian (0.12.6, Qt non patché, comme le serveur d'origine : les PDF sont identiques,
 #     sans en-tête ni pied de page répétés).
@@ -36,7 +37,8 @@ RUN set -eux; \
         python3-openssl python3-passlib python3-pil python3-polib python3-psutil python3-psycopg2 \
         python3-pypdf2 python3-qrcode python3-renderpm python3-reportlab python3-requests \
         python3-rjsmin python3-serial python3-stdnum python3-tz python3-urllib3 python3-usb \
-        python3-vobject python3-werkzeug python3-xlrd python3-xlsxwriter python3-xlwt python3-zeep; \
+        python3-vobject python3-werkzeug python3-xlrd python3-xlsxwriter python3-xlwt python3-zeep \
+        python3-html5lib python3-olefile python3-packaging python3-pygments; \
     rm -rf /var/lib/apt/lists/*
 
 # Sources de la branche (voir .dockerignore), en lecture seule pour l'utilisateur odoo.
