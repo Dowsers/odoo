@@ -1,0 +1,66 @@
+# Odoo 19 (branche odoowsers) + PostgreSQL 18 + redirection HTTP vers HTTPS.
+#
+# Aucun port n'est ouvert vers l'extérieur : les ports sont publiés sur 127.0.0.1 seulement.
+# Tailscale Serve, installé sur la machine hôte, publie Odoo en HTTPS (docker/tailscale_https.sh).
+# Secrets et adresse : fichier .env, à créer à partir de .env.example. Procédure : docker/README.md.
+name: odoo
+
+services:
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}
+      POSTGRES_DB: postgres
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  odoo:
+    build: .
+    image: odoowsers/odoo:19.0
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: odoo
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}
+      DB_NAME: ${DB_NAME:-database}
+      ODOO_ADMIN_PASSWD: ${ODOO_ADMIN_PASSWD:?définir ODOO_ADMIN_PASSWD dans .env}
+    ports:
+      - "127.0.0.1:${ODOO_PORT:-8069}:8069"
+    volumes:
+      - odoo-data:/var/lib/odoo
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://127.0.0.1:8069/web/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  # Renvoie les anciennes adresses HTTP (ports 80 et 8069 du nom Tailscale) vers HTTPS_URL.
+  redirect:
+    image: python:3.11-alpine
+    restart: unless-stopped
+    user: "65534:65534"
+    read_only: true
+    command: ["python3", "/redirect_https.py"]
+    environment:
+      HTTPS_URL: ${HTTPS_URL:?définir HTTPS_URL dans .env}
+      REDIRECT_BIND: 0.0.0.0
+      REDIRECT_PORT: "8068"
+    ports:
+      - "127.0.0.1:${REDIRECT_PORT:-8068}:8068"
+    volumes:
+      - ./docker/redirect_https.py:/redirect_https.py:ro
+
+volumes:
+  db-data:
+  odoo-data:

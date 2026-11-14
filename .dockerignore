@@ -1,0 +1,12 @@
+# Hors de l'image : historique Git (4,8 Go), documentation, empaquetage, secrets locaux.
+.git
+.github
+.tx
+doc
+debian
+setup
+**/__pycache__
+**/*.pyc
+.env
+.env.*
+!.env.example

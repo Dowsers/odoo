@@ -1,0 +1,17 @@
+[options]
+; Fichier écrit par docker/entrypoint.sh à chaque démarrage du conteneur, à partir des variables
+; d'environnement. Pour changer un réglage, modifier ce modèle puis reconstruire l'image.
+db_host = ${DB_HOST}
+db_port = ${DB_PORT}
+db_user = ${DB_USER}
+db_password = ${DB_PASSWORD}
+db_name = ${DB_NAME}
+admin_passwd = ${ODOO_ADMIN_PASSWD}
+data_dir = /var/lib/odoo
+addons_path = /opt/odoo/addons
+default_productivity_apps = True
+; Odoo est derrière Tailscale Serve, qui termine le HTTPS. Le port 8069 du conteneur n'est publié
+; que sur 127.0.0.1 de la machine hôte (docker-compose.yml) : personne ne l'atteint directement.
+proxy_mode = True
+http_interface = 0.0.0.0
+http_port = 8069

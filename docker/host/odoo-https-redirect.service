@@ -1,0 +1,15 @@
+[Unit]
+Description=Redirection HTTP vers HTTPS pour Odoo
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/odoo-https-redirect.env
+ExecStart=/usr/bin/python3 /usr/local/lib/odoo-https/redirect_https.py
+User=nobody
+Group=nogroup
+NoNewPrivileges=yes
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
