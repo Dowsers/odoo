@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <!-- Settings > About: copyright line without link -->
+    <t t-inherit="res_config_edition" t-inherit-mode="extension">
+        <xpath expr="//a[contains(@href, 'odoo.com')]" position="replace">
+            <span>Odoo S.A.</span>
+        </xpath>
+    </t>
+    <!-- Installation page of the web app -->
+    <t t-inherit="web.InstallScopedApp" t-inherit-mode="extension">
+        <xpath expr="//a[contains(@href, 'odoo.com')]" position="replace">
+            <span>Odoo S.A.</span>
+        </xpath>
+    </t>
+</templates>
