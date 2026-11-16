@@ -1,0 +1,73 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* web_local_only
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 10:27+0000\n"
+"PO-Revision-Date: 2026-11-16 10:27+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: web_local_only
+#: model_terms:ir.ui.view,arch_db:web_local_only.digest_mail_main
+msgid "<span class=\"odoo_link_text\">Odoo</span>"
+msgstr "<span class=\"odoo_link_text\">Odoo</span>"
+
+#. module: web_local_only
+#: model_terms:ir.ui.view,arch_db:web_local_only.hr_expense_template_register_no_user
+#: model_terms:ir.ui.view,arch_db:web_local_only.mail_notification_layout
+#: model_terms:ir.ui.view,arch_db:web_local_only.mail_notification_light
+msgid "<span>Odoo</span>"
+msgstr "<span>Odoo</span>"
+
+#. module: web_local_only
+#: model:ir.model.fields,field_description:web_local_only.field_ir_http__display_name
+#: model:ir.model.fields,field_description:web_local_only.field_publisher_warranty_contract__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: web_local_only
+#: model:ir.model,name:web_local_only.model_ir_http
+msgid "HTTP Routing"
+msgstr "Routage HTTP"
+
+#. module: web_local_only
+#: model:ir.model.fields,field_description:web_local_only.field_ir_http__id
+#: model:ir.model.fields,field_description:web_local_only.field_publisher_warranty_contract__id
+msgid "ID"
+msgstr "ID"
+
+#. module: web_local_only
+#: model_terms:ir.ui.view,arch_db:web_local_only.brand_promotion_message
+msgid "Odoo"
+msgstr "Odoo"
+
+#. module: web_local_only
+#: model_terms:ir.ui.view,arch_db:web_local_only.portal_record_sidebar
+msgid "Odoo Logo"
+msgstr "Logo Odoo"
+
+#. module: web_local_only
+#. odoo-javascript
+#: code:addons/web_local_only/static/src/templates.xml:0
+msgid "Odoo S.A."
+msgstr "Odoo S.A."
+
+#. module: web_local_only
+#: model:ir.model,name:web_local_only.model_publisher_warranty_contract
+msgid "Publisher Warranty Contract"
+msgstr "Publisher Warranty Contract"
+
+#. module: web_local_only
+#. odoo-python
+#: code:addons/web_local_only/controllers/editor.py:0
+msgid "The AI of the editor is not available on this instance."
+msgstr "L'IA de l'éditeur n'est pas disponible sur cette instance."

@@ -1,0 +1,79 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* local_ai_appraisal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 10:27+0000\n"
+"PO-Revision-Date: 2026-11-16 10:27+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: local_ai_appraisal
+#: model:ir.model.fields,field_description:local_ai_appraisal.field_hr_appraisal_custom__ai_summary
+#: model_terms:ir.ui.view,arch_db:local_ai_appraisal.hr_appraisal_custom_view_form
+msgid "AI Summary"
+msgstr "Synthèse IA"
+
+#. module: local_ai_appraisal
+#: model:ir.model.fields,field_description:local_ai_appraisal.field_hr_appraisal_custom__ai_summary_date
+msgid "AI Summary Date"
+msgstr "Date de la synthèse IA"
+
+#. module: local_ai_appraisal
+#: model:ir.model.fields,field_description:local_ai_appraisal.field_hr_appraisal_custom__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: local_ai_appraisal
+#: model:ir.model,name:local_ai_appraisal.model_hr_appraisal_custom
+msgid "Employee Appraisal"
+msgstr ""
+
+#. module: local_ai_appraisal
+#: model:ir.model.fields,field_description:local_ai_appraisal.field_hr_appraisal_custom__id
+msgid "ID"
+msgstr "ID"
+
+#. module: local_ai_appraisal
+#. odoo-python
+#: code:addons/local_ai_appraisal/models/hr_appraisal_custom.py:0
+msgid ""
+"The appraisal is empty: fill in the criteria, objectives or comments first."
+msgstr "L'évaluation est vide : renseignez d'abord les critères, les objectifs ou les commentaires."
+
+#. module: local_ai_appraisal
+#. odoo-python
+#: code:addons/local_ai_appraisal/models/hr_appraisal_custom.py:0
+msgid "The local AI did not write a summary."
+msgstr "L'IA locale n'a pas rédigé de synthèse."
+
+#. module: local_ai_appraisal
+#: model_terms:ir.ui.view,arch_db:local_ai_appraisal.hr_appraisal_custom_view_form
+msgid ""
+"The local AI writes a summary of this appraisal. It replaces the previous "
+"summary. Continue?"
+msgstr "L'IA locale rédige une synthèse de cette évaluation. Elle remplace la synthèse précédente. Continuer ?"
+
+#. module: local_ai_appraisal
+#: model_terms:ir.ui.view,arch_db:local_ai_appraisal.hr_appraisal_custom_view_form
+msgid "Use the \"AI Summary\" button to write a summary of the appraisal."
+msgstr "Utilisez le bouton « Synthèse IA » pour rédiger une synthèse de l'évaluation."
+
+#. module: local_ai_appraisal
+#: model:ir.model.fields,help:local_ai_appraisal.field_hr_appraisal_custom__ai_summary
+msgid "Written by the local AI from the appraisal, to check and edit."
+msgstr "Rédigée par l'IA locale à partir de l'évaluation, à vérifier et à modifier."
+
+#. module: local_ai_appraisal
+#: model_terms:ir.ui.view,arch_db:local_ai_appraisal.hr_appraisal_custom_view_form
+msgid ""
+"Written by the local AI from this appraisal: check it before sharing it."
+msgstr "Rédigée par l'IA locale à partir de cette évaluation : vérifiez-la avant de la partager."

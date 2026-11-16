@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_expense_view_form_local_ai" model="ir.ui.view">
+        <field name="name">hr.expense.form.local_ai_ocr</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/header" position="inside">
+                <field name="local_ai_enabled" invisible="1"/>
+                <field name="ai_state" invisible="1"/>
+                <button name="action_local_ai_read_document" type="object" string="Read the receipt (AI)"
+                        invisible="not local_ai_enabled or state != 'draft' or nb_attachment == 0"
+                        help="The local AI reads the receipt and fills the expense while its total is zero."/>
+            </xpath>
+            <xpath expr="/form/sheet" position="before">
+                <div class="alert alert-info" role="alert" invisible="ai_state != 'queued' or state != 'draft'">
+                    The AI is reading the receipt: reload the page in a moment to see the values read.
+                </div>
+                <div class="alert alert-warning" role="alert" invisible="ai_state != 'error' or state != 'draft'">
+                    The AI could not read the receipt: <field name="ai_error" class="d-inline" readonly="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

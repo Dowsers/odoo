@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Local Instance - No Links to odoo.com',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Hidden/Tools',
     'summary': 'Remove the links to odoo.com and the calls to Odoo online services',
     'description': """

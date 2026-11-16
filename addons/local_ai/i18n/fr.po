@@ -1,0 +1,347 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* local_ai
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 10:26+0000\n"
+"PO-Revision-Date: 2026-11-16 10:26+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_writer_plugin.js:0
+msgid "AI"
+msgstr "IA"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_local_ai_queue_mixin__ai_date
+msgid "AI Date"
+msgstr "Date IA"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_local_ai_queue_mixin__ai_error
+msgid "AI Error"
+msgstr "Erreur IA"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_res_config_settings__local_ai_model
+msgid "AI Model"
+msgstr "Modèle d'IA"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_local_ai_queue_mixin__ai_state
+msgid "AI Status"
+msgstr "Statut IA"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_res_config_settings__local_ai_timeout
+msgid "AI Timeout (s)"
+msgstr "Délai de réponse de l'IA (s)"
+
+#. module: local_ai
+#: model_terms:ir.ui.view,arch_db:local_ai.res_config_settings_view_form
+msgid ""
+"AI server of the company network. Only an address of the Tailscale network "
+"is accepted: nothing is sent outside."
+msgstr "Serveur d'IA du réseau de l'entreprise. Seule une adresse du réseau Tailscale est acceptée : rien n'est envoyé à l'extérieur."
+
+#. module: local_ai
+#: model:ir.model.fields,help:local_ai.field_res_config_settings__local_ai_url
+msgid ""
+"Address of the Ollama server, through Tailscale, e.g. "
+"http://machine.tailnet.ts.net:11434. Leave empty to disable the local AI."
+msgstr "Adresse du serveur Ollama, par Tailscale, par exemple http://machine.tailnet.ts.net:11434. Laisser vide pour désactiver l'IA locale."
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: local_ai
+#: model:ir.model,name:local_ai.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de configuration"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_modes.js:0
+msgid "Correct"
+msgstr "Corriger"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_modes.js:0
+msgid "Develop"
+msgstr "Développer"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_ir_http__display_name
+#: model:ir.model.fields,field_description:local_ai.field_local_ai__display_name
+#: model:ir.model.fields,field_description:local_ai.field_local_ai_queue_mixin__display_name
+#: model:ir.model.fields,field_description:local_ai.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:local_ai.field_res_users__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: local_ai
+#: model:ir.model.fields.selection,name:local_ai.selection__account_analytic_line__ai_state__done
+#: model:ir.model.fields.selection,name:local_ai.selection__account_move__ai_state__done
+#: model:ir.model.fields.selection,name:local_ai.selection__hr_expense__ai_state__done
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_cir_draft__ai_state__done
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_document_mixin__ai_state__done
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_queue_mixin__ai_state__done
+msgid "Done"
+msgstr "Terminé"
+
+#. module: local_ai
+#: model:ir.model.fields.selection,name:local_ai.selection__account_analytic_line__ai_state__error
+#: model:ir.model.fields.selection,name:local_ai.selection__account_move__ai_state__error
+#: model:ir.model.fields.selection,name:local_ai.selection__hr_expense__ai_state__error
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_cir_draft__ai_state__error
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_document_mixin__ai_state__error
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_queue_mixin__ai_state__error
+msgid "Error"
+msgstr "Erreur"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Generate"
+msgstr "Générer"
+
+#. module: local_ai
+#: model:ir.model,name:local_ai.model_ir_http
+msgid "HTTP Routing"
+msgstr "Routage HTTP"
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_ir_http__id
+#: model:ir.model.fields,field_description:local_ai.field_local_ai__id
+#: model:ir.model.fields,field_description:local_ai.field_local_ai_queue_mixin__id
+#: model:ir.model.fields,field_description:local_ai.field_res_config_settings__id
+#: model:ir.model.fields,field_description:local_ai.field_res_users__id
+msgid "ID"
+msgstr "ID"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+#: code:addons/local_ai/static/src/editor/local_ai_writer_plugin.js:0
+msgid "Improve with AI"
+msgstr "Améliorer avec l'IA"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Insert"
+msgstr "Insérer"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid "Invalid address of the AI server: %s"
+msgstr "Adresse du serveur d'IA invalide : %s"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Loading..."
+msgstr "Chargement..."
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/res_config_settings.py:0
+#: model_terms:ir.ui.view,arch_db:local_ai.res_config_settings_view_form
+msgid "Local AI"
+msgstr "IA locale"
+
+#. module: local_ai
+#: model:ir.model,name:local_ai.model_local_ai
+msgid "Local AI (Ollama)"
+msgstr "IA locale (Ollama)"
+
+#. module: local_ai
+#: model:ir.model,name:local_ai.model_local_ai_queue_mixin
+msgid "Local AI processing queue"
+msgstr "File de traitement de l'IA locale"
+
+#. module: local_ai
+#: model:ir.actions.server,name:local_ai.ir_cron_local_ai_queue_ir_actions_server
+msgid "Local AI: process the queue"
+msgstr "IA locale : traiter la file d'attente"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid ""
+"Ollama %(version)s answers through %(url)s. Model %(model)s: \"%(answer)s\" "
+"in %(seconds).1f s."
+msgstr "Ollama %(version)s répond via %(url)s. Modèle %(model)s : « %(answer)s » en %(seconds).1f s."
+
+#. module: local_ai
+#: model:ir.model.fields,field_description:local_ai.field_res_config_settings__local_ai_url
+#: model_terms:ir.ui.view,arch_db:local_ai.res_config_settings_view_form
+msgid "Ollama Server"
+msgstr "Serveur Ollama"
+
+#. module: local_ai
+#: model:ir.model.fields.selection,name:local_ai.selection__account_analytic_line__ai_state__queued
+#: model:ir.model.fields.selection,name:local_ai.selection__account_move__ai_state__queued
+#: model:ir.model.fields.selection,name:local_ai.selection__hr_expense__ai_state__queued
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_cir_draft__ai_state__queued
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_document_mixin__ai_state__queued
+#: model:ir.model.fields.selection,name:local_ai.selection__local_ai_queue_mixin__ai_state__queued
+msgid "Queued"
+msgstr "En file d'attente"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_modes.js:0
+msgid "Rephrase"
+msgstr "Reformuler"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Replace"
+msgstr "Remplacer"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_modes.js:0
+msgid "Shorten"
+msgstr "Raccourcir"
+
+#. module: local_ai
+#: model_terms:ir.ui.view,arch_db:local_ai.res_config_settings_view_form
+msgid "Test the Connection"
+msgstr "Tester la connexion"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid "The AI server %(host)s cannot be found: %(error)s"
+msgstr "Le serveur d'IA %(host)s est introuvable : %(error)s"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid ""
+"The AI server %(host)s resolves to %(addresses)s, outside the Tailscale "
+"network: the request was not sent."
+msgstr "Le serveur d'IA %(host)s correspond à %(addresses)s, hors du réseau Tailscale : la requête n'a pas été envoyée."
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid "The AI server cannot be reached: %s"
+msgstr "Le serveur d'IA est injoignable : %s"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid "The AI server did not answer with valid data."
+msgstr "Le serveur d'IA n'a pas renvoyé de données valides."
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid ""
+"The AI server did not answer within %s seconds. It may be busy: try again "
+"later."
+msgstr "Le serveur d'IA n'a pas répondu en %s secondes. Il est peut-être occupé : réessayez plus tard."
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid "The AI server returned an error (%(status)s): %(detail)s"
+msgstr "Le serveur d'IA a renvoyé une erreur (%(status)s) : %(detail)s"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid ""
+"The local AI is not configured: set the address of the Ollama server in "
+"Settings, General Settings, Local AI."
+msgstr "L'IA locale n'est pas configurée : renseignez l'adresse du serveur Ollama dans Paramètres, Paramètres généraux, IA locale."
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "The local AI is writing..."
+msgstr "L'IA locale rédige..."
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid ""
+"The model %(model)s is not installed on the AI server. Installed models: "
+"%(models)s."
+msgstr "Le modèle %(model)s n'est pas installé sur le serveur d'IA. Modèles installés : %(models)s."
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Try Again"
+msgstr "Réessayer"
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai.py:0
+msgid "Unexpected answer from the AI server."
+msgstr "Réponse inattendue du serveur d'IA."
+
+#. module: local_ai
+#. odoo-python
+#: code:addons/local_ai/models/local_ai_queue_mixin.py:0
+msgid "Unexpected error: %s"
+msgstr "Erreur inattendue : %s"
+
+#. module: local_ai
+#: model:ir.model,name:local_ai.model_res_users
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid ""
+"What should the AI write? e.g. An e-mail to thank a customer for the meeting"
+msgstr "Que doit écrire l'IA ? Par exemple : un e-mail pour remercier un client de la réunion"
+
+#. module: local_ai
+#: model:ir.model.fields,help:local_ai.field_local_ai_queue_mixin__ai_date
+msgid "When the record was queued, then processed."
+msgstr "Date de mise en file d'attente, puis de traitement."
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_writer_plugin.js:0
+msgid "Write a text with the AI"
+msgstr "Rédiger un texte avec l'IA"
+
+#. module: local_ai
+#. odoo-javascript
+#: code:addons/local_ai/static/src/editor/local_ai_dialogs.xml:0
+msgid "Write with AI"
+msgstr "Rédiger avec l'IA"
+
+#. module: local_ai
+#: model_terms:ir.ui.view,arch_db:local_ai.res_config_settings_view_form
+msgid "http://machine.tailnet.ts.net:11434"
+msgstr "http://machine.tailnet.ts.net:11434"
+
+#. module: local_ai
+#: model_terms:ir.ui.view,arch_db:local_ai.res_config_settings_view_form
+msgid "qwen3.5:2b"
+msgstr "qwen3.5:2b"

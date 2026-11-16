@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_cir_draft_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2 t-esc="doc.task_id.name"/>
+                <p class="text-muted">
+                    <span t-esc="doc.project_id.name"/> - CIR <span t-esc="doc.year"/>
+                </p>
+                <div t-out="doc.facts"/>
+                <h3>Objectives</h3>
+                <div t-out="doc.objectives"/>
+                <h3>Scientific and Technical Obstacles</h3>
+                <div t-out="doc.obstacles"/>
+                <h3>Work Carried Out</h3>
+                <div t-out="doc.work"/>
+                <h3>Results and Progress</h3>
+                <div t-out="doc.results"/>
+                <p class="text-muted small mt-4">Draft written by the local AI from the timesheets, to check and complete.</p>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_cir_draft">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="local_ai_cir.report_cir_draft_document"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_cir_draft" model="ir.actions.report">
+        <field name="name">CIR Dossier (Draft)</field>
+        <field name="model">local.ai.cir.draft</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">local_ai_cir.report_cir_draft</field>
+        <field name="report_file">local_ai_cir.report_cir_draft</field>
+        <field name="print_report_name">'CIR %s - %s' % (object.year, object.task_id.name)</field>
+        <field name="binding_model_id" ref="model_local_ai_cir_draft"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

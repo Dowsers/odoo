@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+from unittest.mock import patch
 
 from odoo.tests import HttpCase, new_test_user, tagged
 
@@ -42,6 +43,14 @@ class TestLocalOnly(HttpCase):
         self.assertEqual(self.env.ref('base.open_module_tree').domain, "[('to_buy', '=', False)]")
         login_page = self.url_open('/web/login').text
         self.assertNotIn('odoo.com', login_page)
+        # the editor's AI never reaches olg.api.odoo.com: refused, or answered locally (local_ai)
+        with patch('odoo.addons.html_editor.controllers.main.iap_tools.iap_jsonrpc') as olg:
+            self.authenticate('local_only_admin', 'local_only_admin')
+            try:
+                self.make_jsonrpc_request('/html_editor/generate_text', {'prompt': 'Hello', 'conversation_history': []})
+            except Exception:  # noqa: BLE001 - refused (UserError) or local server unavailable
+                pass
+            olg.assert_not_called()
         self.authenticate('local_only_admin', 'local_only_admin')
         url = self.make_jsonrpc_request('/web/session/account', {})
         self.assertNotIn('odoo.com', url)
@@ -76,8 +85,10 @@ class TestLocalOnly(HttpCase):
                 const ids = editor.plugins.map((plugin) => plugin.constructor.id);
                 editor.destroy();
                 editable.remove();
-                if (ids.includes("chatgpt_translate")) {
-                    errors.push("editor still has the ChatGPT plugin");
+                // kept only when a module answers the editor's AI locally (local_ai)
+                if (ids.includes("chatgpt_translate") !== Boolean(get("@web/session").session.editor_ai_enabled)) {
+                    errors.push("ChatGPT plugin: " + ids.includes("chatgpt_translate") +
+                        ", local AI enabled: " + Boolean(get("@web/session").session.editor_ai_enabled));
                 }
                 if (!ids.length) {
                     errors.push("editor started without plugins");

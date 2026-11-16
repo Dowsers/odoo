@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Processes the records queued for the local AI. Triggered at once when a record is
+         queued; the interval only catches up after a restart. -->
+    <record id="ir_cron_local_ai_queue" model="ir.cron">
+        <field name="name">Local AI: process the queue</field>
+        <field name="model_id" ref="model_local_ai"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_process_queue()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+    </record>
+</odoo>

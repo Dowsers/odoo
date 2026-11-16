@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_local_ai" model="ir.ui.view">
+        <field name="name">account.move.form.local_ai_ocr</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/header" position="inside">
+                <field name="local_ai_enabled" invisible="1"/>
+                <field name="ai_state" invisible="1"/>
+                <button name="action_local_ai_read_document" type="object" string="Read the document (AI)"
+                        groups="account.group_account_invoice"
+                        invisible="not local_ai_enabled or state != 'draft' or move_type not in ('in_invoice', 'in_refund')"
+                        help="The local AI reads the document attached to the bill and fills the fields still empty."/>
+            </xpath>
+            <xpath expr="/form/sheet" position="before">
+                <div class="alert alert-info" role="alert"
+                     invisible="ai_state != 'queued' or state != 'draft' or move_type not in ('in_invoice', 'in_refund')">
+                    The AI is reading the document of this bill: reload the page in a moment to see the values read.
+                </div>
+                <div class="alert alert-warning" role="alert"
+                     invisible="ai_state != 'error' or state != 'draft' or move_type not in ('in_invoice', 'in_refund')">
+                    The AI could not read the document: <field name="ai_error" class="d-inline" readonly="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

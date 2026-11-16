@@ -27,7 +27,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         postgresql-client-18 \
-        wkhtmltopdf \
+        wkhtmltopdf poppler-utils \
         fonts-dejavu-core fonts-font-awesome fonts-inconsolata fonts-roboto-unhinted gsfonts \
         python3 \
         python3-asn1crypto python3-babel python3-cbor2 python3-chardet python3-cryptography \

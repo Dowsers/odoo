@@ -9,4 +9,6 @@ class IrHttp(models.AbstractModel):
         info = super().session_info()
         # the "Support" entry of the user menu is removed; nothing else should point to odoo.com
         info['support_url'] = '/odoo'
+        # AI of the editor: off unless a module answers it locally (local_ai sets it)
+        info.setdefault('editor_ai_enabled', False)
         return info

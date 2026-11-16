@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cir_descriptions"
+              name="Descriptions to Complete (CIR)"
+              parent="hr_timesheet.timesheet_menu_root"
+              action="action_cir_descriptions"
+              groups="hr_timesheet.group_hr_timesheet_user"
+              sequence="3"/>
+    <menuitem id="menu_cir_draft"
+              name="CIR Dossier (AI Drafts)"
+              parent="hr_timesheet.menu_hr_time_tracking"
+              action="action_cir_draft"
+              groups="hr_timesheet.group_timesheet_manager"
+              sequence="21"/>
+</odoo>

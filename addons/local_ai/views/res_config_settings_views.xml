@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.local.ai</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block name="integration" position="after">
+                <block title="Local AI" name="local_ai_setting_container">
+                    <setting id="local_ai_server" string="Ollama Server"
+                             help="AI server of the company network. Only an address of the Tailscale network is accepted: nothing is sent outside.">
+                        <field name="local_ai_url" placeholder="http://machine.tailnet.ts.net:11434"/>
+                        <div class="mt-2 row">
+                            <label for="local_ai_model" class="col-lg-4 o_light_label"/>
+                            <field name="local_ai_model" class="col-lg-8" placeholder="qwen3.5:2b"/>
+                        </div>
+                        <div class="row">
+                            <label for="local_ai_timeout" class="col-lg-4 o_light_label"/>
+                            <field name="local_ai_timeout" class="col-lg-8"/>
+                        </div>
+                        <button name="action_local_ai_test" type="object" string="Test the Connection"
+                                icon="oi-arrow-right" class="btn-link" invisible="not local_ai_url"/>
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>

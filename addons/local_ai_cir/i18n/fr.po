@@ -1,0 +1,547 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* local_ai_cir
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 10:26+0000\n"
+"PO-Revision-Date: 2026-11-16 10:26+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "%(count)s, of which %(described)s with a description"
+msgstr "%(count)s, dont %(described)s avec une description"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "%s days"
+msgstr "%s jours"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/account_analytic_line.py:0
+msgid ""
+"%s description(s) requested. Reload the list in a moment to see the "
+"suggestions."
+msgstr "%s description(s) demandée(s). Rechargez la liste dans un instant pour voir les suggestions."
+
+#. module: local_ai_cir
+#: model:ir.actions.report,print_report_name:local_ai_cir.action_report_cir_draft
+msgid "'CIR %s - %s' % (object.year, object.task_id.name)"
+msgstr ""
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.report_cir_draft_document
+msgid "- CIR"
+msgstr "- CIR"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__ai_date
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__ai_date
+msgid "AI Date"
+msgstr "Date IA"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__ai_error
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__ai_error
+msgid "AI Error"
+msgstr "Erreur IA"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__model_used
+msgid "AI Model"
+msgstr "Modèle d'IA"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__ai_state
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__ai_state
+msgid "AI Status"
+msgstr "Statut IA"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__ai_suggestion
+msgid "AI Suggestion"
+msgstr "Suggestion IA"
+
+#. module: local_ai_cir
+#: model_terms:ir.actions.act_window,help:local_ai_cir.action_cir_descriptions
+msgid "All your activities are described"
+msgstr "Toutes vos activités sont décrites"
+
+#. module: local_ai_cir
+#: model:ir.model,name:local_ai_cir.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Ligne analytique"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Apply the Suggestions"
+msgstr "Appliquer les suggestions"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Apply the suggestion"
+msgstr "Appliquer la suggestion"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_search
+msgid "Being Written"
+msgstr "En cours de rédaction"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,help:local_ai_cir.field_local_ai_cir_draft_wizard__task_ids
+msgid ""
+"By default, the tasks with activity timesheets in the year, the most worked "
+"first. Remove the tasks that are not R&D operations."
+msgstr "Par défaut, les tâches ayant des feuilles de temps d'activité dans l'année, les plus travaillées en premier. Retirez les tâches qui ne sont pas des opérations de R&D."
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "CIR %(year)s - %(task)s"
+msgstr "CIR %(year)s - %(task)s"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__cir_description_quality
+msgid "CIR Description"
+msgstr "Description CIR"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_list
+msgid "CIR Dossier"
+msgstr "Dossier CIR"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/wizard/cir_draft_wizard.py:0
+msgid "CIR Dossier %s (AI Drafts)"
+msgstr "Dossier CIR %s (brouillons IA)"
+
+#. module: local_ai_cir
+#: model:ir.actions.act_window,name:local_ai_cir.action_cir_draft
+#: model:ir.ui.menu,name:local_ai_cir.menu_cir_draft
+msgid "CIR Dossier (AI Drafts)"
+msgstr "Dossier CIR (brouillons IA)"
+
+#. module: local_ai_cir
+#: model:ir.actions.report,name:local_ai_cir.action_report_cir_draft
+msgid "CIR Dossier (Draft)"
+msgstr "Dossier CIR (brouillon)"
+
+#. module: local_ai_cir
+#: model:ir.model,name:local_ai_cir.model_local_ai_cir_draft
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+msgid "CIR Dossier Draft"
+msgstr "Brouillon du dossier CIR"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_wizard_view_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,help:local_ai_cir.field_local_ai_cir_draft__facts
+msgid "Computed by Odoo from the timesheets, not by the AI."
+msgstr "Calculé par Odoo à partir des feuilles de temps, pas par l'IA."
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__create_uid
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__create_date
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Date"
+msgstr "Date"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__total_days
+msgid "Days"
+msgstr "Jours"
+
+#. module: local_ai_cir
+#: model:ir.model.fields.selection,name:local_ai_cir.selection__account_analytic_line__cir_description_quality__ok
+msgid "Described"
+msgstr "Décrite"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__described_count
+msgid "Described Timesheets"
+msgstr "Feuilles de temps décrites"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Description"
+msgstr "Description"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,help:local_ai_cir.field_account_analytic_line__ai_suggestion
+msgid "Description suggested by the local AI, to apply or edit."
+msgstr "Description suggérée par l'IA locale, à appliquer ou à modifier."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Descriptions to Complete"
+msgstr "Descriptions à compléter"
+
+#. module: local_ai_cir
+#: model:ir.actions.act_window,name:local_ai_cir.action_cir_descriptions
+#: model:ir.ui.menu,name:local_ai_cir.menu_cir_descriptions
+msgid "Descriptions to Complete (CIR)"
+msgstr "Descriptions à compléter (CIR)"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Dismiss the Suggestions"
+msgstr "Ignorer les suggestions"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__display_name
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.report_cir_draft_document
+msgid ""
+"Draft written by the local AI from the timesheets, to check and complete."
+msgstr "Brouillon rédigé par l'IA locale à partir des feuilles de temps, à vérifier et à compléter."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+msgid ""
+"Draft written by the local AI from the timesheets: check every sentence and "
+"complete the parts marked \"À compléter\" before using it."
+msgstr "Brouillon rédigé par l'IA locale à partir des feuilles de temps : vérifiez chaque phrase et complétez les parties marquées « À compléter » avant de l'utiliser."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Employee"
+msgstr "Employé"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_search
+msgid "Error"
+msgstr "Erreur"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__facts
+msgid "Facts"
+msgstr "Faits"
+
+#. module: local_ai_cir
+#: model_terms:ir.actions.act_window,help:local_ai_cir.action_cir_draft
+msgid ""
+"For each R&amp;D task of a year, the local AI writes a draft of the "
+"technical description from the timesheets: objectives, obstacles, work "
+"carried out, results. Nothing leaves the company network."
+msgstr "Pour chaque tâche de R&amp;D d'une année, l'IA locale rédige un brouillon de la description technique à partir des feuilles de temps : objectifs, verrous, travaux réalisés, résultats. Rien ne sort du réseau de l'entreprise."
+
+#. module: local_ai_cir
+#: model:ir.model.fields,help:local_ai_cir.field_account_analytic_line__cir_description_quality
+msgid ""
+"How well the description justifies an activity for the CIR: missing (\"/\"),"
+" too short (less than 3 words or 15 characters), or described. Empty for "
+"absences and analytic lines."
+msgstr "Dans quelle mesure la description justifie une activité pour le CIR : manquante (« / »), trop courte (moins de 3 mots ou 15 caractères) ou décrite. Vide pour les absences et les lignes analytiques."
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__id
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__id
+msgid "ID"
+msgstr "ID"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__write_uid
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Mis à jour par"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__write_date
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__write_date
+msgid "Last Updated on"
+msgstr "Mis à jour le"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/account_analytic_line.py:0
+msgid "Local AI"
+msgstr "IA locale"
+
+#. module: local_ai_cir
+#: model:ir.model.fields.selection,name:local_ai_cir.selection__account_analytic_line__cir_description_quality__missing
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Missing"
+msgstr "Manquante"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "My Timesheets"
+msgstr "Mes feuilles de temps"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__name
+msgid "Name"
+msgstr "Nom"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__objectives
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.report_cir_draft_document
+msgid "Objectives"
+msgstr "Objectifs"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+msgid "Obstacles"
+msgstr "Verrous"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+#: code:addons/local_ai_cir/wizard/cir_draft_wizard.py:0
+msgid "Only timesheet administrators can prepare the CIR dossier."
+msgstr "Seuls les administrateurs des feuilles de temps peuvent préparer le dossier CIR."
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__employee_count
+msgid "People"
+msgstr "Personnes"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "Period"
+msgstr "Période"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_wizard_view_form
+msgid "Prepare"
+msgstr "Préparer"
+
+#. module: local_ai_cir
+#: model:ir.actions.act_window,name:local_ai_cir.action_cir_draft_wizard
+msgid "Prepare the CIR Dossier Drafts"
+msgstr "Préparer les brouillons du dossier CIR"
+
+#. module: local_ai_cir
+#: model:ir.model,name:local_ai_cir.model_local_ai_cir_draft_wizard
+msgid "Prepare the CIR dossier drafts"
+msgstr "Préparer les brouillons du dossier CIR"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_list
+msgid "Prepare the Drafts"
+msgstr "Préparer les brouillons"
+
+#. module: local_ai_cir
+#: model_terms:ir.actions.act_window,help:local_ai_cir.action_cir_draft
+msgid "Prepare the drafts of the CIR dossier"
+msgstr "Préparer les brouillons du dossier CIR"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__project_id
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_search
+msgid "Project"
+msgstr "Projet"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__task_id
+msgid "R&D Task"
+msgstr "Tâche de R&D"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__task_ids
+msgid "R&D Tasks"
+msgstr "Tâches de R&D"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+msgid "Results"
+msgstr "Résultats"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__results
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.report_cir_draft_document
+msgid "Results and Progress"
+msgstr "Résultats et avancées"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__obstacles
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.report_cir_draft_document
+msgid "Scientific and Technical Obstacles"
+msgstr "Verrous scientifiques et techniques"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/wizard/cir_draft_wizard.py:0
+msgid "Select at least one task."
+msgstr "Sélectionnez au moins une tâche."
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/account_analytic_line.py:0
+msgid "Select at most %s timesheets at a time."
+msgstr "Sélectionnez au plus %s feuilles de temps à la fois."
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/account_analytic_line.py:0
+msgid "Select timesheets whose description is missing or too short."
+msgstr "Sélectionnez des feuilles de temps dont la description est manquante ou trop courte."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Suggest Descriptions (AI)"
+msgstr "Suggérer des descriptions (IA)"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+msgid "Suggest a description"
+msgstr "Suggérer une description"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Suggestion Ready"
+msgstr "Suggestion prête"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Suggestion Requested"
+msgstr "Suggestion demandée"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Task"
+msgstr "Tâche"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/account_analytic_line.py:0
+msgid "The local AI did not suggest a description."
+msgstr "L'IA locale n'a pas suggéré de description."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+msgid "The local AI is writing this draft. Reload the page in a few minutes."
+msgstr "L'IA locale rédige ce brouillon. Rechargez la page dans quelques minutes."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_wizard_view_form
+msgid ""
+"The local AI writes one draft per task, in the background (about one to two "
+"minutes per task). Drafts already prepared for these tasks are written "
+"again."
+msgstr "L'IA locale rédige un brouillon par tâche, en arrière-plan (une à deux minutes environ par tâche). Les brouillons déjà préparés pour ces tâches sont rédigés à nouveau."
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+msgid ""
+"The sections will be written again from the timesheets: your changes will be"
+" lost. Continue?"
+msgstr "Les sections seront rédigées à nouveau à partir des feuilles de temps : vos modifications seront perdues. Continuer ?"
+
+#. module: local_ai_cir
+#: model:ir.model.constraint,message:local_ai_cir.constraint_local_ai_cir_draft_year_task_uniq
+msgid "There is already a draft for this task and year."
+msgstr "Il existe déjà un brouillon pour cette tâche et cette année."
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "Time spent"
+msgstr "Temps passé"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__line_count
+msgid "Timesheets"
+msgstr "Feuilles de temps"
+
+#. module: local_ai_cir
+#: model_terms:ir.actions.act_window,help:local_ai_cir.action_cir_descriptions
+msgid ""
+"Timesheets of activities whose description is missing (\"/\") or too short "
+"appear here. They justify the time spent for the Crédit d'Impôt Recherche: "
+"write what was done, or ask the local AI for a suggestion."
+msgstr "Les feuilles de temps d'activités dont la description est manquante (« / ») ou trop courte apparaissent ici. Elles justifient le temps passé pour le Crédit d'Impôt Recherche : écrivez ce qui a été fait, ou demandez une suggestion à l'IA locale."
+
+#. module: local_ai_cir
+#: model:ir.model.fields.selection,name:local_ai_cir.selection__account_analytic_line__cir_description_quality__short
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_search
+msgid "Too Short"
+msgstr "Trop courte"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.account_analytic_line_cir_view_list
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_list
+msgid "Total"
+msgstr "Total"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,help:local_ai_cir.field_account_analytic_line__ai_date
+#: model:ir.model.fields,help:local_ai_cir.field_local_ai_cir_draft__ai_date
+msgid "When the record was queued, then processed."
+msgstr "Date de mise en file d'attente, puis de traitement."
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__work
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.report_cir_draft_document
+msgid "Work Carried Out"
+msgstr "Travaux réalisés"
+
+#. module: local_ai_cir
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_form
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_list
+msgid "Write Again (AI)"
+msgstr "Rédiger à nouveau (IA)"
+
+#. module: local_ai_cir
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft__year
+#: model:ir.model.fields,field_description:local_ai_cir.field_local_ai_cir_draft_wizard__year
+#: model_terms:ir.ui.view,arch_db:local_ai_cir.cir_draft_view_search
+msgid "Year"
+msgstr "Année"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "from %(first)s to %(last)s"
+msgstr "du %(first)s au %(last)s"
+
+#. module: local_ai_cir
+#. odoo-python
+#: code:addons/local_ai_cir/models/cir_draft.py:0
+msgid "no timesheet"
+msgstr "aucune feuille de temps"

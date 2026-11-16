@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cir_draft_wizard_view_form" model="ir.ui.view">
+        <field name="name">local.ai.cir.draft.wizard.form</field>
+        <field name="model">local.ai.cir.draft.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <p class="text-muted">The local AI writes one draft per task, in the background (about one to two minutes per task). Drafts already prepared for these tasks are written again.</p>
+                <group>
+                    <field name="year"/>
+                    <field name="task_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object" string="Prepare" class="btn-primary" icon="fa-magic"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cir_draft_wizard" model="ir.actions.act_window">
+        <field name="name">Prepare the CIR Dossier Drafts</field>
+        <field name="res_model">local.ai.cir.draft.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

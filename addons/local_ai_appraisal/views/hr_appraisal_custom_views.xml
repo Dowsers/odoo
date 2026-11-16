@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_appraisal_custom_view_form" model="ir.ui.view">
+        <field name="name">hr.appraisal.custom.form.local.ai</field>
+        <field name="model">hr.appraisal.custom</field>
+        <field name="inherit_id" ref="hr_appraisal_custom.hr_appraisal_custom_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_local_ai_summary" type="object" string="AI Summary" icon="fa-magic"
+                        confirm="The local AI writes a summary of this appraisal. It replaces the previous summary. Continue?"
+                        invisible="state == 'cancel'"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="AI Summary" name="local_ai_summary">
+                    <div class="alert alert-warning" role="status" invisible="not ai_summary">
+                        Written by the local AI from this appraisal: check it before sharing it.
+                        <field name="ai_summary_date" class="oe_inline" readonly="1"/>
+                    </div>
+                    <field name="ai_summary" placeholder="Use the &quot;AI Summary&quot; button to write a summary of the appraisal."/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

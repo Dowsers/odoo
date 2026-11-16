@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_analytic_line_cir_view_list" model="ir.ui.view">
+        <field name="name">account.analytic.line.list.cir.descriptions</field>
+        <field name="model">account.analytic.line</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <list string="Descriptions to Complete" editable="bottom" create="0" delete="0"
+                  decoration-muted="cir_description_quality == 'ok'">
+                <header>
+                    <button name="action_local_ai_suggest" type="object" string="Suggest Descriptions (AI)"
+                            icon="fa-magic" class="btn-primary"/>
+                    <button name="action_local_ai_apply" type="object" string="Apply the Suggestions" icon="fa-check"/>
+                    <button name="action_local_ai_dismiss" type="object" string="Dismiss the Suggestions"/>
+                </header>
+                <field name="date" readonly="1"/>
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee" optional="show"/>
+                <field name="project_id" readonly="1"/>
+                <field name="task_id" readonly="1"/>
+                <field name="unit_amount" readonly="1" widget="timesheet_uom" sum="Total" optional="hide"/>
+                <field name="name" string="Description" required="1"/>
+                <field name="cir_description_quality" widget="badge" readonly="1"
+                       decoration-danger="cir_description_quality == 'missing'"
+                       decoration-warning="cir_description_quality == 'short'"
+                       decoration-success="cir_description_quality == 'ok'"/>
+                <field name="ai_suggestion"/>
+                <field name="ai_state" widget="badge" optional="show"
+                       decoration-info="ai_state == 'queued'" decoration-danger="ai_state == 'error'"/>
+                <field name="ai_error" optional="hide"/>
+                <button name="action_local_ai_apply" type="object" icon="fa-check" title="Apply the suggestion"
+                        invisible="not ai_suggestion"/>
+                <button name="action_local_ai_suggest" type="object" icon="fa-magic" title="Suggest a description"
+                        invisible="ai_state == 'queued' or cir_description_quality not in ('missing', 'short')"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="account_analytic_line_cir_view_search" model="ir.ui.view">
+        <field name="name">account.analytic.line.search.cir.descriptions</field>
+        <field name="model">account.analytic.line</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <field name="name"/>
+                <filter name="mine" string="My Timesheets" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter name="missing" string="Missing" domain="[('cir_description_quality', '=', 'missing')]"/>
+                <filter name="short" string="Too Short" domain="[('cir_description_quality', '=', 'short')]"/>
+                <separator/>
+                <filter name="suggested" string="Suggestion Ready" domain="[('ai_suggestion', '!=', False)]"/>
+                <filter name="queued" string="Suggestion Requested" domain="[('ai_state', '=', 'queued')]"/>
+                <separator/>
+                <filter name="date" string="Date" date="date"/>
+                <group>
+                    <filter name="group_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="group_task" string="Task" context="{'group_by': 'task_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cir_descriptions" model="ir.actions.act_window">
+        <field name="name">Descriptions to Complete (CIR)</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="account_analytic_line_cir_view_list"/>
+        <field name="search_view_id" ref="account_analytic_line_cir_view_search"/>
+        <field name="domain">[('project_id', '!=', False), ('cir_description_quality', 'in', ('missing', 'short'))]</field>
+        <field name="context">{'search_default_mine': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">All your activities are described</p>
+            <p>Timesheets of activities whose description is missing ("/") or too short appear here. They justify the time spent for the Crédit d'Impôt Recherche: write what was done, or ask the local AI for a suggestion.</p>
+        </field>
+    </record>
+</odoo>

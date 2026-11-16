@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="local_ai.Spinner">
+        <div class="d-flex my-2">
+            <img src="/web/static/img/spin.svg" alt="Loading..." class="me-2"
+                 style="filter:invert(1); opacity: 0.5; width: 30px; height: 30px;"/>
+            <p class="m-0 text-muted align-self-center"><em>The local AI is writing...</em></p>
+        </div>
+    </t>
+
+    <t t-name="local_ai.Answer">
+        <t t-set="message" t-value="state.messages[0]"/>
+        <div t-if="message" t-att-data-message-id="message.id"
+             t-att-class="message.isError ? 'o-message-error border-danger bg-danger p-2' : 'border rounded p-2'">
+            <t t-out="formatContent(message.text)"/>
+        </div>
+    </t>
+
+    <t t-name="local_ai.RewriteDialog">
+        <Dialog size="'lg'" title.translate="Improve with AI">
+            <p class="text-muted mb-2"><t t-esc="props.mode.label"/></p>
+            <t t-if="state.inProgress" t-call="local_ai.Spinner"/>
+            <t t-else="" t-call="local_ai.Answer"/>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_confirm"
+                        t-att-disabled="state.inProgress || !state.messages.length || state.messages[0].isError">Replace</button>
+                <button class="btn btn-secondary" t-on-click="() => this.run()" t-att-disabled="state.inProgress">Try Again</button>
+                <button class="btn btn-secondary" t-on-click="_cancel">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="local_ai.PromptDialog">
+        <Dialog size="'lg'" title.translate="Write with AI">
+            <textarea class="form-control mb-2" rows="3" t-model="state.prompt" t-on-keydown="onKeydown"
+                      placeholder="What should the AI write? e.g. An e-mail to thank a customer for the meeting"/>
+            <button class="btn btn-secondary mb-3" t-on-click="() => this.submit()"
+                    t-att-disabled="state.inProgress || !state.prompt.trim()">Generate</button>
+            <t t-if="state.inProgress" t-call="local_ai.Spinner"/>
+            <t t-else="" t-call="local_ai.Answer"/>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_confirm"
+                        t-att-disabled="state.inProgress || !state.messages.length || state.messages[0].isError">Insert</button>
+                <button class="btn btn-secondary" t-on-click="_cancel">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="local_ai.ModeSelector">
+        <Dropdown menuRef="menuRef">
+            <button class="btn btn-light" name="local_ai_rewrite" t-att-title="props.title"
+                    t-att-disabled="props.isDisabled">
+                <i class="fa fa-magic"/>
+            </button>
+            <t t-set-slot="content">
+                <div data-prevent-closing-overlay="true">
+                    <t t-foreach="modes" t-as="mode" t-key="mode.id">
+                        <DropdownItem class="'user-select-none'" onSelected="() => this.props.onSelected(mode)">
+                            <t t-esc="mode.label"/>
+                        </DropdownItem>
+                    </t>
+                </div>
+            </t>
+        </Dropdown>
+    </t>
+
+</templates>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cir_draft_view_list" model="ir.ui.view">
+        <field name="name">local.ai.cir.draft.list</field>
+        <field name="model">local.ai.cir.draft</field>
+        <field name="arch" type="xml">
+            <list string="CIR Dossier" create="0">
+                <header>
+                    <button name="%(action_cir_draft_wizard)d" type="action" string="Prepare the Drafts"
+                            class="btn-primary" display="always"/>
+                    <button name="action_generate" type="object" string="Write Again (AI)" icon="fa-magic"/>
+                </header>
+                <field name="year"/>
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <field name="total_days" sum="Total"/>
+                <field name="employee_count" optional="show"/>
+                <field name="described_count" optional="show"/>
+                <field name="line_count" optional="show"/>
+                <field name="ai_state" widget="badge" decoration-info="ai_state == 'queued'"
+                       decoration-success="ai_state == 'done'" decoration-danger="ai_state == 'error'"/>
+                <field name="ai_date" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="cir_draft_view_form" model="ir.ui.view">
+        <field name="name">local.ai.cir.draft.form</field>
+        <field name="model">local.ai.cir.draft</field>
+        <field name="arch" type="xml">
+            <form string="CIR Dossier Draft" create="0">
+                <header>
+                    <button name="action_generate" type="object" string="Write Again (AI)" icon="fa-magic"
+                            invisible="ai_state == 'queued'"
+                            confirm="The sections will be written again from the timesheets: your changes will be lost. Continue?"/>
+                    <field name="ai_state" widget="statusbar" statusbar_visible="queued,done"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="status" invisible="ai_state != 'queued'">
+                        The local AI is writing this draft. Reload the page in a few minutes.
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="ai_state != 'error'">
+                        <field name="ai_error" readonly="1"/>
+                    </div>
+                    <div class="alert alert-warning" role="status" invisible="ai_state != 'done'">
+                        Draft written by the local AI from the timesheets: check every sentence and complete the parts marked "À compléter" before using it.
+                    </div>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="year" readonly="1"/>
+                            <field name="task_id" readonly="1"/>
+                            <field name="project_id"/>
+                        </group>
+                        <group>
+                            <field name="total_days"/>
+                            <field name="employee_count"/>
+                            <field name="described_count"/>
+                            <field name="model_used"/>
+                        </group>
+                    </group>
+                    <field name="facts"/>
+                    <notebook>
+                        <page string="Objectives" name="objectives">
+                            <field name="objectives" options="{'resizable': true}"/>
+                        </page>
+                        <page string="Obstacles" name="obstacles">
+                            <field name="obstacles" options="{'resizable': true}"/>
+                        </page>
+                        <page string="Work Carried Out" name="work">
+                            <field name="work" options="{'resizable': true}"/>
+                        </page>
+                        <page string="Results" name="results">
+                            <field name="results" options="{'resizable': true}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cir_draft_view_search" model="ir.ui.view">
+        <field name="name">local.ai.cir.draft.search</field>
+        <field name="model">local.ai.cir.draft</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="task_id"/>
+                <field name="project_id"/>
+                <field name="year"/>
+                <filter name="queued" string="Being Written" domain="[('ai_state', '=', 'queued')]"/>
+                <filter name="error" string="Error" domain="[('ai_state', '=', 'error')]"/>
+                <group>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cir_draft" model="ir.actions.act_window">
+        <field name="name">CIR Dossier (AI Drafts)</field>
+        <field name="res_model">local.ai.cir.draft</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="cir_draft_view_search"/>
+        <field name="context">{'search_default_group_year': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Prepare the drafts of the CIR dossier</p>
+            <p>For each R&amp;D task of a year, the local AI writes a draft of the technical description from the timesheets: objectives, obstacles, work carried out, results. Nothing leaves the company network.</p>
+        </field>
+    </record>
+</odoo>

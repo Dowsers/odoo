@@ -4,7 +4,7 @@ Module Odoo personnalisé pour une instance utilisée sur un réseau privé uniq
 odoo.com et les appels aux services en ligne d'Odoo S.A.
 
 ## Version
-- **Version** : 19.0.1.0.0
+- **Version** : 19.0.1.1.0
 - **Catégorie** : Caché/Outils
 - **Licence** : LGPL-3
 
@@ -17,7 +17,7 @@ odoo.com et les appels aux services en ligne d'Odoo S.A.
 | E-mails | Lien « Powered by Odoo » dans les mises en page de notification, le digest périodique, les modèles d'invitation et de badge, les e-mails de notes de frais | Texte sans lien ; bandeau « Odoo Mobile » du digest retiré |
 | Paramètres | Options Enterprise avec fenêtre « Upgrade » vers odoo.com, bloc « Odoo IAP », icônes de documentation, lien du copyright | Masqués |
 | Applications | Modules Enterprise « à acheter », menus « Applications tierces » et « Thèmes » (apps.odoo.com) | Masqués |
-| Éditeur de texte | Bouton « Traduire » (ChatGPT via olg.api.odoo.com), onglet « Illustrations » (media-api.odoo.com) | Retirés |
+| Éditeur de texte | Bouton « Traduire » (ChatGPT via olg.api.odoo.com), onglet « Illustrations » (media-api.odoo.com) | Retirés ; les demandes d'IA de l'éditeur sont refusées côté serveur. Le module `local_ai` réactive le bouton en faisant répondre le serveur d'IA de l'entreprise, sans passer par odoo.com |
 | Arrière-plan | Action planifiée « Publisher: Update Notification », qui envoie à Odoo S.A. l'identifiant de la base, le nombre d'utilisateurs et la liste des modules | Désactivée, et la méthode ne contacte plus rien même si elle est relancée |
 
 Les modèles d'e-mail sont nettoyés une fois, à l'installation, dans toutes les langues : seul le lien est retiré, le
